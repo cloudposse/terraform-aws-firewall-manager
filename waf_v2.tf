@@ -1,0 +1,57 @@
+module "waf_v2_label" {
+  for_each = local.waf_v2_policies
+
+  source  = "cloudposse/label/null"
+  version = "0.24.1"
+
+  attributes = [each.key]
+  context    = module.this.context
+}
+
+resource "aws_fms_policy" "waf_v2" {
+  for_each = local.waf_v2_policies
+
+  name                        = module.waf_v2_label[each.key].id
+  delete_all_policy_resources = lookup(each.value, "delete_all_policy_resources", true)
+  exclude_resource_tags       = lookup(each.value, "exclude_resource_tags", false)
+  remediation_enabled         = lookup(each.value, "remediation_enabled", false)
+  resource_type_list          = lookup(each.value, "resource_type_list")
+  resource_tags               = lookup(each.value, "resource_tags", null)
+
+  dynamic "include_map" {
+    for_each = lookup(each.value, "include_map", null) != null ? [1] : []
+
+    content {
+      account = tolist(include_map.value)
+    }
+  }
+
+  dynamic "exclude_map" {
+    for_each = lookup(each.value, "exclude_map", null) != null ? [1] : []
+
+    content {
+      account = tolist(exclude_map.value)
+    }
+  }
+
+  security_service_policy_data {
+    type = "WAFV2"
+
+    managed_service_data = jsonencode({
+      type                  = "WAFV2"
+      preProcessRuleGroups  = lookup(each.value.managed_service_data, "pre_process_rule_groups", [])
+      postProcessRuleGroups = lookup(each.value.managed_service_data, "post_process_rule_groups", [])
+
+      defaultAction = {
+        type = upper(each.value.managed_service_data.default_action)
+      }
+
+      overrideCustomerWebACLAssociation = lookup(each.value.managed_service_data, "override_customer_web_acl_association", false)
+
+      loggingConfiguration = {
+        logDestinationConfigs = lookup(each.value.managed_service_data, "log_destinations", [])
+        redactedFields        = lookup(each.value.managed_service_data, "log_redacted_fields", [])
+      }
+    })
+  }
+}
