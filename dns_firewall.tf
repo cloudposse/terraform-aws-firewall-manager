@@ -1,5 +1,5 @@
-module "shiled_advanced_label" {
-  for_each = local.shiled_advanced_policies
+module "dns_firewall_label" {
+  for_each = local.dns_firewall_policies
 
   source  = "cloudposse/label/null"
   version = "0.24.1"
@@ -8,10 +8,10 @@ module "shiled_advanced_label" {
   context    = module.this.context
 }
 
-resource "aws_fms_policy" "shiled_advanced" {
-  for_each = local.shiled_advanced_policies
+resource "aws_fms_policy" "dns_firewall" {
+  for_each = local.dns_firewall_policies
 
-  name                        = module.shiled_advanced_label[each.key].id
+  name                        = module.dns_firewall_label[each.key].id
   delete_all_policy_resources = lookup(each.value, "delete_all_policy_resources", true)
   exclude_resource_tags       = lookup(each.value, "exclude_resource_tags", false)
   remediation_enabled         = lookup(each.value, "remediation_enabled", false)
@@ -35,8 +35,13 @@ resource "aws_fms_policy" "shiled_advanced" {
   }
 
   security_service_policy_data {
-    type = "SHIELD_ADVANCED"
+    type = "DNS_FIREWALL"
 
-    managed_service_data = ""
+    managed_service_data = jsonencode({
+      type                  = "DNS_FIREWALL"
+      preProcessRuleGroups  = lookup(each.value.managed_service_data, "pre_process_rule_groups", [])
+      postProcessRuleGroups = lookup(each.value.managed_service_data, "post_process_rule_groups", [])
+      }
+    )
   }
 }
