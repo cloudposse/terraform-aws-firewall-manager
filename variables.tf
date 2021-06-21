@@ -4,6 +4,12 @@ variable "admin_account_ids" {
   default     = []
 }
 
+variable "assume_arn" {
+  type        = string
+  description = "The ARN of the role you want to assume for making these changes - must be a root account for setting up Firewall Manager Admin Account."
+  default     = null
+}
+
 variable "security_groups_common_policies" {
   type    = list(any)
   default = []
