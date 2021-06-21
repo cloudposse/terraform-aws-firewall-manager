@@ -9,8 +9,8 @@ module "security_groups_common_label" {
 }
 
 resource "aws_fms_policy" "security_groups_common" {
-  for_each = local.security_groups_common_policies
-  provider = aws.firewall_manager_admin
+  for_each                    = local.security_groups_common_policies
+  provider                    = aws.firewall_manager_admin
   name                        = module.security_groups_common_label[each.key].id
   delete_all_policy_resources = lookup(each.value, "delete_all_policy_resources", true)
   exclude_resource_tags       = lookup(each.value, "exclude_resource_tags", false)
