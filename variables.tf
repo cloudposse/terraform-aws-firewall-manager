@@ -9,6 +9,12 @@ variable "admin_account_ids" {
   default     = []
 }
 
+variable "assume_arn" {
+  type        = string
+  description = "The ARN of the role you want to assume for making these changes - must be a root account for setting up Firewall Manager Admin Account."
+  default     = null
+}
+
 variable "security_groups_common_policies" {
   type    = list(any)
   default = []
@@ -59,10 +65,4 @@ variable "firewall_manager_administrator_arn" {
   type        = string
   description = "The ARN of the role you want to assume for destroying these changes - must be the AWS Firewall Manager administrator account. (contains admin_account_ids) "
   default     = null
-}
-
-variable "is_destroy" {
-  type        = bool
-  description = "Which command are we running through terraform"
-  default     = false
 }

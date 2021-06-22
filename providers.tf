@@ -1,7 +1,7 @@
 provider "aws" {
   region = var.region
   assume_role {
-    role_arn = local.assume_arn
+    role_arn = var.assume_arn
   }
 }
 
