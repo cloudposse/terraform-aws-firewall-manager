@@ -1,12 +1,12 @@
 provider "aws" {
   region = var.region
-    assume_role {
-      role_arn = local.assume_arn
-    }
+  assume_role {
+    role_arn = local.assume_arn
+  }
 }
 
 provider "aws" {
-  alias = "firewall_manager_admin"
+  alias  = "firewall_manager_admin"
   region = var.region
   assume_role {
     role_arn = var.firewall_manager_administrator_arn
@@ -14,7 +14,7 @@ provider "aws" {
 }
 
 provider "aws" {
-  alias = "organization_management"
+  alias  = "organization_management"
   region = var.region
   assume_role {
     role_arn = var.organization_management_arn
