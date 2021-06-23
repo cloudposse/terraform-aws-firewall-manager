@@ -1,8 +1,3 @@
-variable "region" {
-  type        = string
-  description = "AWS Region"
-}
-
 variable "admin_account_id" {
   type        = string
   description = "The AWS account ID to associate to associate with AWS Firewall Manager as the AWS Firewall Manager administrator account. This can be an AWS Organizations master account or a member account. Defaults to the current account."
