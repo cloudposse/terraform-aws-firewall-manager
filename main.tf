@@ -8,7 +8,6 @@ locals {
   waf_v2_policies                        = local.enabled && length(var.waf_v2_policies) > 0 ? { for policy in flatten(var.waf_v2_policies) : policy.name => policy } : {}
   dns_firewall_policies                  = local.enabled && length(var.dns_firewall_policies) > 0 ? { for policy in flatten(var.dns_firewall_policies) : policy.name => policy } : {}
   network_firewall_policies              = local.enabled && length(var.network_firewall_policies) > 0 ? { for policy in flatten(var.network_firewall_policies) : policy.name => policy } : {}
-  assumed_arn                            = var.is_destroy ? var.firewall_manager_administrator_arn : var.organization_management_arn
 }
 
 data "aws_caller_identity" "default" {
@@ -16,6 +15,6 @@ data "aws_caller_identity" "default" {
 }
 
 resource "aws_fms_admin_account" "default" {
-  provider   = aws.variable_arn
+  provider = aws.dynamic_arn
   account_id = var.admin_account_id
 }
