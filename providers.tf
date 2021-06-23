@@ -7,7 +7,7 @@ provider "aws" {
 
 provider "aws" {
   region = var.region
-  alias = "variable_arn"
+  alias  = "variable_arn"
   assume_role {
     role_arn = local.assumed_arn
   }

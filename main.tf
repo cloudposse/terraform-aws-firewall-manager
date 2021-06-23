@@ -16,6 +16,6 @@ data "aws_caller_identity" "default" {
 }
 
 resource "aws_fms_admin_account" "default" {
-  provider = aws.variable_arn
+  provider   = aws.variable_arn
   account_id = var.admin_account_id
 }
