@@ -282,6 +282,29 @@ variable "network_firewall_policies" {
     include_account_ids:
       A list of AWS Organization member Accounts that you want to include for this AWS FMS Policy.
     policy_data:
-      
+      stateless_rule_group_references:
+        A list of maps of configuration blocks containing references to the stateful rule groups that are used in the policy.
+        Format: `{ "resourceARN": "arn:aws:network-firewall:us-west-1:1234567891011:stateless-rulegroup/rulegroup2", "priority": 10 }`
+      stateless_default_actions:
+        A list of actions to take on a packet if it does not match any of the stateless rules in the policy. 
+        You must specify one of the standard actions including: `aws:drop`, `aws:pass`, or `aws:forward_to_sfe`. 
+        In addition, you can specify custom actions that are compatible with your standard action choice. 
+        If you want non-matching packets to be forwarded for stateful inspection, specify aws:forward_to_sfe.
+      stateless_fragment_default_actions:
+        A list of actions to take on a fragmented packet if it does not match any of the stateless rules in the policy. 
+        You must specify one of the standard actions including: `aws:drop`, `aws:pass`, or `aws:forward_to_sfe`. 
+        In addition, you can specify custom actions that are compatible with your standard action choice. 
+        If you want non-matching packets to be forwarded for stateful inspection, specify aws:forward_to_sfe.
+      stateless_custom_actions:
+        A list of maps describing the custom action definitions that are available for use in the firewall policy's `stateless_default_actions`.
+        Format: `{ "actionName": "custom1", "actionDefinition": { "publishMetricAction": { "dimensions": [ { "value": "dimension1" } ] } } }`
+      stateful_rule_group_references_arns:
+        A list of ARNs of the stateful rule groups.
+      orchestration_config:
+        single_firewall_endpoint_per_vpc:
+          Whether to use single Firewall Endpoint per VPC.
+          Defaults to `false`.
+        allowed_ipv4_cidrs:
+          A list of allowed ipv4 cidrs.
   DOC
 }

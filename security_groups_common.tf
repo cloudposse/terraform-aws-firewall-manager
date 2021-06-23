@@ -43,7 +43,7 @@ resource "aws_fms_policy" "security_groups_common" {
       revertManualSecurityGroupChanges         = lookup(each.value.policy_data, "revert_manual_security_group_changes", false)
       exclusiveResourceSecurityGroupManagement = lookup(each.value.policy_data, "exclusive_resource_security_group_management", false)
       applyToAllEC2InstanceENIs                = lookup(each.value.policy_data, "apply_to_all_ec2_instance_enis", false)
-      securityGroups                           = lookup(each.value.policy_data, "security_groups", null) != null ? flatten([for sg in tolist(each.value.managed_service_data.security_groups) : { id = sg }]) : {}
+      securityGroups                           = lookup(each.value.policy_data, "security_groups", null) != null ? flatten([for sg in tolist(each.value.policy_data.security_groups) : { id = sg }]) : {}
     })
   }
 }
