@@ -113,7 +113,6 @@ variable "security_groups_usage_audit_policies" {
       coalesce_redundant_security_groups:
         Whether to coalesce redundant Security Groups.
         Defaults to `false`.
-      
   DOC
 }
 
@@ -172,6 +171,12 @@ variable "waf_policies" {
       A list of AWS Organization member Accounts that you want to exclude from this AWS FMS Policy.
     include_account_ids:
       A list of AWS Organization member Accounts that you want to include for this AWS FMS Policy.
+    policy_data:
+      default_action:
+        The action that you want AWS WAF to take.
+        Possible values: `ALLOW`, `BLOCK` or `COUNT`.
+      rule_groups:
+        A list of rule groups.
   DOC
 }
 
@@ -201,6 +206,18 @@ variable "waf_v2_policies" {
       A list of AWS Organization member Accounts that you want to exclude from this AWS FMS Policy.
     include_account_ids:
       A list of AWS Organization member Accounts that you want to include for this AWS FMS Policy.
+    policy_data:
+      default_action:
+        The action that you want AWS WAF to take.
+        Possible values: `ALLOW`, `BLOCK` or `COUNT`.
+      override_customer_web_acl_association:
+        Wheter to override customer Web ACL association
+      logging_configuration:
+        The WAFv2 Web ACL logging configuration.
+      pre_process_rule_groups:
+        A list of pre-proccess rule groups.
+      post_process_rule_groups:
+        A list of post-proccess rule groups.
   DOC
 }
 
@@ -230,6 +247,11 @@ variable "dns_firewall_policies" {
       A list of AWS Organization member Accounts that you want to exclude from this AWS FMS Policy.
     include_account_ids:
       A list of AWS Organization member Accounts that you want to include for this AWS FMS Policy.
+    policy_data:
+      pre_process_rule_groups:
+        A list of maps of pre-proccess rule groups in the format `{ "ruleGroupId": "rslvr-frg-1", "priority": 10 }`.
+      post_process_rule_groups:
+        A list of maps post-proccess rule groups in the format `{ "ruleGroupId": "rslvr-frg-1", "priority": 10 }`.
   DOC
 }
 
@@ -259,5 +281,7 @@ variable "network_firewall_policies" {
       A list of AWS Organization member Accounts that you want to exclude from this AWS FMS Policy.
     include_account_ids:
       A list of AWS Organization member Accounts that you want to include for this AWS FMS Policy.
+    policy_data:
+      
   DOC
 }
