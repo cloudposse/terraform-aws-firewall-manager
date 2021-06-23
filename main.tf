@@ -10,11 +10,9 @@ locals {
   network_firewall_policies              = local.enabled && length(var.network_firewall_policies) > 0 ? { for policy in flatten(var.network_firewall_policies) : policy.name => policy } : {}
 }
 
-data "aws_caller_identity" "default" {
-  count = local.enabled ? 1 : 0
-}
-
 resource "aws_fms_admin_account" "default" {
+  count = local.enabled ? 1 : 0
   provider = aws.dynamic_arn
+
   account_id = var.admin_account_id
 }

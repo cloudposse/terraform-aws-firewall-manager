@@ -15,22 +15,23 @@ resource "aws_fms_policy" "waf_v2" {
   delete_all_policy_resources = lookup(each.value, "delete_all_policy_resources", true)
   exclude_resource_tags       = lookup(each.value, "exclude_resource_tags", false)
   remediation_enabled         = lookup(each.value, "remediation_enabled", false)
-  resource_type_list          = lookup(each.value, "resource_type_list")
+  resource_type_list          = lookup(each.value, "resource_type_list", null)
+  resource_type               = lookup(each.value, "resource_type", null)
   resource_tags               = lookup(each.value, "resource_tags", null)
 
   dynamic "include_map" {
-    for_each = lookup(each.value, "include_map", null) != null ? [1] : []
+    for_each = lookup(each.value, "include_account_ids", null) != null ? [1] : []
 
     content {
-      account = tolist(include_map.value)
+      account = include_map.value
     }
   }
 
   dynamic "exclude_map" {
-    for_each = lookup(each.value, "exclude_map", null) != null ? [1] : []
+    for_each = lookup(each.value, "exclude_account_ids", null) != null ? [1] : []
 
     content {
-      account = tolist(exclude_map.value)
+      account = exclude_map.value
     }
   }
 
@@ -39,18 +40,18 @@ resource "aws_fms_policy" "waf_v2" {
 
     managed_service_data = jsonencode({
       type                  = "WAFV2"
-      preProcessRuleGroups  = lookup(each.value.managed_service_data, "pre_process_rule_groups", [])
-      postProcessRuleGroups = lookup(each.value.managed_service_data, "post_process_rule_groups", [])
+      preProcessRuleGroups  = lookup(each.value.policy_data, "pre_process_rule_groups", [])
+      postProcessRuleGroups = lookup(each.value.policy_data, "post_process_rule_groups", [])
 
       defaultAction = {
-        type = upper(each.value.managed_service_data.default_action)
+        type = upper(each.value.policy_data.default_action)
       }
 
-      overrideCustomerWebACLAssociation = lookup(each.value.managed_service_data, "override_customer_web_acl_association", false)
+      overrideCustomerWebACLAssociation = lookup(each.value.policy_data, "override_customer_web_acl_association", false)
 
       loggingConfiguration = {
-        logDestinationConfigs = lookup(each.value.managed_service_data, "log_destinations", [])
-        redactedFields        = lookup(each.value.managed_service_data, "log_redacted_fields", [])
+        logDestinationConfigs = lookup(each.value.policy_data, "log_destinations", [])
+        redactedFields        = lookup(each.value.policy_data, "log_redacted_fields", [])
       }
     })
   }
