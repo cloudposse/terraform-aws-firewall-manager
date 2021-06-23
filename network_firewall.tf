@@ -44,7 +44,7 @@ resource "aws_fms_policy" "network_firewall" {
       networkFirewallStatelessDefaultActions         = lookup(each.value.policy_data, "stateless_default_actions", [])
       networkFirewallStatelessFragmentDefaultActions = lookup(each.value.policy_data, "stateless_fragment_default_actions", [])
       networkFirewallStatelessCustomActions          = lookup(each.value.policy_data, "stateless_custom_actions", [])
-      networkFirewallStatefulRuleGroupReferences     = lookup(each.value.policy_data, "stateful_rule_group_references_arns", null) != null ? flatten([for group in tolist(each.value.policy_data.stateful_rule_group_references_arns) : { resourceARN = group }]) : []
+      networkFirewallStatefulRuleGroupReferences     = lookup(each.value.policy_data, "stateful_rule_group_references_arns", null) != null ? [for group in each.value.policy_data.stateful_rule_group_references_arns : { resourceARN = group }] : []
       networkFirewallOrchestrationConfig = {
         singleFirewallEndpointPerVPC = lookup(each.value.policy_data.orchestration_config, "single_firewall_endpoint_per_vpc", false)
         allowedIPV4CidrList          = lookup(each.value.policy_data.orchestration_config, "allowed_ipv4_cidrs", [])

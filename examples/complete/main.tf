@@ -1,3 +1,7 @@
+provider "aws" {
+  region = var.region
+}
+
 module "vpc" {
   source  = "cloudposse/vpc/aws"
   version = "v0.26.1"
@@ -33,6 +37,7 @@ module "fms" {
       }
     }
   ]
+
   security_groups_common_policies = [
     {
       name               = "disabled-all"
