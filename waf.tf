@@ -40,7 +40,7 @@ resource "aws_fms_policy" "waf" {
 
     managed_service_data = jsonencode({
       type       = "WAF"
-      ruleGroups = flatten(each.value.policy_data.rule_groups)
+      ruleGroups = lookup(each.value.policy_data, "rule_groups", [])
 
       defaultAction = {
         type = upper(each.value.policy_data.default_action)

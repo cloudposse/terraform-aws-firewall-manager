@@ -113,7 +113,6 @@ variable "security_groups_usage_audit_policies" {
       coalesce_redundant_security_groups:
         Whether to coalesce redundant Security Groups.
         Defaults to `false`.
-
   DOC
 }
 
@@ -172,6 +171,12 @@ variable "waf_policies" {
       A list of AWS Organization member Accounts that you want to exclude from this AWS FMS Policy.
     include_account_ids:
       A list of AWS Organization member Accounts that you want to include for this AWS FMS Policy.
+    policy_data:
+      default_action:
+        The action that you want AWS WAF to take.
+        Possible values: `ALLOW`, `BLOCK` or `COUNT`.
+      rule_groups:
+        A list of rule groups.
   DOC
 }
 
@@ -201,6 +206,18 @@ variable "waf_v2_policies" {
       A list of AWS Organization member Accounts that you want to exclude from this AWS FMS Policy.
     include_account_ids:
       A list of AWS Organization member Accounts that you want to include for this AWS FMS Policy.
+    policy_data:
+      default_action:
+        The action that you want AWS WAF to take.
+        Possible values: `ALLOW`, `BLOCK` or `COUNT`.
+      override_customer_web_acl_association:
+        Wheter to override customer Web ACL association
+      logging_configuration:
+        The WAFv2 Web ACL logging configuration.
+      pre_process_rule_groups:
+        A list of pre-proccess rule groups.
+      post_process_rule_groups:
+        A list of post-proccess rule groups.
   DOC
 }
 
@@ -230,6 +247,11 @@ variable "dns_firewall_policies" {
       A list of AWS Organization member Accounts that you want to exclude from this AWS FMS Policy.
     include_account_ids:
       A list of AWS Organization member Accounts that you want to include for this AWS FMS Policy.
+    policy_data:
+      pre_process_rule_groups:
+        A list of maps of pre-proccess rule groups in the format `{ "ruleGroupId": "rslvr-frg-1", "priority": 10 }`.
+      post_process_rule_groups:
+        A list of maps post-proccess rule groups in the format `{ "ruleGroupId": "rslvr-frg-1", "priority": 10 }`.
   DOC
 }
 
@@ -259,5 +281,30 @@ variable "network_firewall_policies" {
       A list of AWS Organization member Accounts that you want to exclude from this AWS FMS Policy.
     include_account_ids:
       A list of AWS Organization member Accounts that you want to include for this AWS FMS Policy.
+    policy_data:
+      stateless_rule_group_references:
+        A list of maps of configuration blocks containing references to the stateful rule groups that are used in the policy.
+        Format: `{ "resourceARN": "arn:aws:network-firewall:us-west-1:1234567891011:stateless-rulegroup/rulegroup2", "priority": 10 }`
+      stateless_default_actions:
+        A list of actions to take on a packet if it does not match any of the stateless rules in the policy.
+        You must specify one of the standard actions including: `aws:drop`, `aws:pass`, or `aws:forward_to_sfe`.
+        In addition, you can specify custom actions that are compatible with your standard action choice.
+        If you want non-matching packets to be forwarded for stateful inspection, specify aws:forward_to_sfe.
+      stateless_fragment_default_actions:
+        A list of actions to take on a fragmented packet if it does not match any of the stateless rules in the policy.
+        You must specify one of the standard actions including: `aws:drop`, `aws:pass`, or `aws:forward_to_sfe`.
+        In addition, you can specify custom actions that are compatible with your standard action choice.
+        If you want non-matching packets to be forwarded for stateful inspection, specify aws:forward_to_sfe.
+      stateless_custom_actions:
+        A list of maps describing the custom action definitions that are available for use in the firewall policy's `stateless_default_actions`.
+        Format: `{ "actionName": "custom1", "actionDefinition": { "publishMetricAction": { "dimensions": [ { "value": "dimension1" } ] } } }`
+      stateful_rule_group_references_arns:
+        A list of ARNs of the stateful rule groups.
+      orchestration_config:
+        single_firewall_endpoint_per_vpc:
+          Whether to use single Firewall Endpoint per VPC.
+          Defaults to `false`.
+        allowed_ipv4_cidrs:
+          A list of allowed ipv4 cidrs.
   DOC
 }

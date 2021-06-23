@@ -48,11 +48,7 @@ resource "aws_fms_policy" "waf_v2" {
       }
 
       overrideCustomerWebACLAssociation = lookup(each.value.policy_data, "override_customer_web_acl_association", false)
-
-      loggingConfiguration = {
-        logDestinationConfigs = lookup(each.value.policy_data, "log_destinations", [])
-        redactedFields        = lookup(each.value.policy_data, "log_redacted_fields", [])
-      }
+      loggingConfiguration              = lookup(each.value.policy_data, "logging_configuration", {})
     })
   }
 }

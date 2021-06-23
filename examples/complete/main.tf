@@ -35,7 +35,7 @@ module "fms" {
   ]
   security_groups_common_policies = [
     {
-      name               = "maxmimum-allowed"
+      name               = "disabled-all"
       resource_type_list = ["AWS::EC2::SecurityGroup"]
 
       policy_data = {
@@ -43,6 +43,31 @@ module "fms" {
         exclusive_resource_security_group_management = false
         apply_to_all_ec2_instance_enis               = false
         security_groups                              = [module.vpc.security_group_id]
+      }
+    }
+  ]
+
+  waf_v2_policies = [
+    {
+      name               = "linux-policy"
+      resource_type_list = ["AWS::ElasticLoadBalancingV2::LoadBalancer", "AWS::ApiGateway::Stage"]
+
+      policy_data = {
+        default_action                        = "allow"
+        override_customer_web_acl_association = false
+        pre_process_rule_groups = [
+          {
+            "managedRuleGroupIdentifier" : {
+              "vendorName" : "AWS",
+              "managedRuleGroupName" : "AWSManagedRulesLinuxRuleSet",
+              "version" : null
+            },
+            "overrideAction" : { "type" : "NONE" },
+            "ruleGroupArn" : null,
+            "excludeRules" : [],
+            "ruleGroupType" : "ManagedRuleGroup"
+          }
+        ]
       }
     }
   ]
