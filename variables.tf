@@ -67,6 +67,6 @@ variable "organization_management_arn" {
 
 variable "firewall_manager_administrator_arn" {
   type        = string
-  description = "The ARN of the role you want to assume for destroying these changes - must be the AWS Firewall Manager administrator account. (contains admin_account_ids) "
+  description = "The ARN of the role that will act as the Firewall Manager Admin Account."
   default     = null
 }
