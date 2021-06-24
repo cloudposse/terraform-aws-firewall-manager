@@ -12,7 +12,7 @@ locals {
 
 resource "aws_fms_admin_account" "default" {
   count = local.enabled ? 1 : 0
-  provider = aws.dynamic_provider
+  provider = aws.associate_admin
 
   account_id = var.admin_account_id
 }
