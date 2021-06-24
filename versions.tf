@@ -6,7 +6,7 @@ terraform {
       source  = "hashicorp/aws"
       version = ">= 2.0"
       configuration_aliases = [
-        aws.associate_admin
+        aws.admin
       ]
     }
   }
