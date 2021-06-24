@@ -4,6 +4,24 @@ variable "admin_account_id" {
   default     = null
 }
 
+variable "admin_account_enabled" {
+  type        = bool
+  description = "Resource for aws_fms_admin_account is enabled and will be created or destroyed"
+  default     = true
+}
+
+variable "firehose_enabled" {
+  type        = bool
+  description = "Create a Kinesis Firehose destination for WAF_V2 Rules. Conflicts with `firehose_arn`"
+  default     = false
+}
+
+variable "firehose_arn" {
+  type        = string
+  description = "Create a Kinesis Firehose destination for WAF_V2 Rules. Conflicts with `firehose_enabled`"
+  default     = null
+}
+
 variable "security_groups_common_policies" {
   type        = list(any)
   default     = []
