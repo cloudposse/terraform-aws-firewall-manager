@@ -27,7 +27,8 @@ EOF
 
 resource "aws_kinesis_firehose_delivery_stream" "firehose_stream" {
   count       = var.firehose_enabled ? 1 : 0
-  name        = module.this.id
+  // `aws-waf-logs-` required by AWS - https://aws.amazon.com/premiumsupport/knowledge-center/waf-configure-comprehensive-logging/
+  name                = format("%s%s", "aws-waf-logs-", module.this.id)
   destination = "s3"
 
   s3_configuration {

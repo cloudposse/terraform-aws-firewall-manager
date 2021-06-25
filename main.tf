@@ -10,10 +10,8 @@ locals {
   network_firewall_policies              = local.enabled && length(var.network_firewall_policies) > 0 ? { for policy in flatten(var.network_firewall_policies) : policy.name => policy } : {}
 
 
-  logging_configuration                  = local.enabled && var.firehose_enabled ? jsonencode({ logDestinationConfigs:[join("", aws_kinesis_firehose_delivery_stream.firehose_stream.*.id)]}) : {}
-//  , redactedFields:[{ redactedFieldType:"SingleHeader", redactedFieldValue:"Cookies"},{redactedFieldType:"Method"}]}) : {}
+  logging_configuration                  = local.enabled && var.firehose_enabled ? { logDestinationConfigs:[join("", aws_kinesis_firehose_delivery_stream.firehose_stream.*.id)]} : local.enabled && var.firehose_arn != null ? { logDestinationConfigs:[var.firehose_arn], redactedFields:[{ redactedFieldType:"SingleHeader", redactedFieldValue:"Cookies"},{redactedFieldType:"Method"}]} : {}
 }
-//: local.enabled && var.firehose_arn != null ? jsonencode({ logDestinationConfigs:[var.firehose_arn], redactedFields:[{ redactedFieldType:"SingleHeader", redactedFieldValue:"Cookies"},{redactedFieldType:"Method"}]}) :
 
 resource "aws_fms_admin_account" "default" {
   count = local.enabled && var.admin_account_enabled ? 1 : 0
