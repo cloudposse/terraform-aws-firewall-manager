@@ -18,7 +18,7 @@ variable "firehose_enabled" {
 
 variable "firehose_arn" {
   type        = string
-  description = "Create a Kinesis Firehose destination for WAF_V2 Rules. Conflicts with `firehose_enabled`"
+  description = "Kinesis Firehose ARN used to create a Kinesis Firehose destination for WAF_V2 Rules. Conflicts with `firehose_enabled`"
   default     = null
 }
 
