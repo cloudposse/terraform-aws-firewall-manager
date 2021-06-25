@@ -7,6 +7,9 @@
 .terraform
 .terraform.tfstate.lock.info
 
+# lock file
+.terraform.lock.hcl
+
 **/.idea
 **/*.iml
 
