@@ -1,4 +1,4 @@
-module "firehose" {
+module "firehose_label" {
   source = "cloudposse/label/null"
   version = "0.24.1"
 
@@ -9,14 +9,13 @@ module "firehose" {
 
 resource "aws_s3_bucket" "firehose_bucket" {
   count       = local.enabled && var.firehose_enabled ? 1 : 0
-  bucket      = module.firehose.id
+  bucket      = module.firehose_label.id
   acl         = "private"
 }
 
-
 resource "aws_iam_role" "firehose_role" {
   count               = local.enabled && var.firehose_enabled ? 1 : 0
-  name                = module.firehose.id
+  name                = module.firehose_label.id
 
   assume_role_policy  = <<EOF
 {
