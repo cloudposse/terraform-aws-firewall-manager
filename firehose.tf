@@ -1,5 +1,5 @@
 module "firehose_label" {
-  source = "cloudposse/label/null"
+  source  = "cloudposse/label/null"
   version = "0.24.1"
 
   attributes = ["firehose"]
@@ -8,16 +8,16 @@ module "firehose_label" {
 }
 
 resource "aws_s3_bucket" "firehose_bucket" {
-  count       = local.enabled && var.firehose_enabled ? 1 : 0
-  bucket      = module.firehose_label.id
-  acl         = "private"
+  count  = local.enabled && var.firehose_enabled ? 1 : 0
+  bucket = module.firehose_label.id
+  acl    = "private"
 }
 
 resource "aws_iam_role" "firehose_role" {
-  count               = local.enabled && var.firehose_enabled ? 1 : 0
-  name                = module.firehose_label.id
+  count = local.enabled && var.firehose_enabled ? 1 : 0
+  name  = module.firehose_label.id
 
-  assume_role_policy  = <<EOF
+  assume_role_policy = <<EOF
 {
   "Version": "2012-10-17",
   "Statement": [
@@ -35,9 +35,9 @@ EOF
 }
 
 resource "aws_kinesis_firehose_delivery_stream" "firehose_stream" {
-  count       = local.enabled && var.firehose_enabled ? 1 : 0
+  count = local.enabled && var.firehose_enabled ? 1 : 0
   // `aws-waf-logs-` required by AWS - https://aws.amazon.com/premiumsupport/knowledge-center/waf-configure-comprehensive-logging/
-  name                = format("%s%s", "aws-waf-logs-", module.this.id)
+  name        = format("%s%s", "aws-waf-logs-", module.this.id)
   destination = "s3"
 
   s3_configuration {
