@@ -8,20 +8,20 @@ module "firehose_label" {
 }
 
 module "firehose_s3_bucket" {
-  count  = local.enabled && var.firehose_enabled ? 1 : 0
-  source = "cloudposse/s3-bucket/aws"
-  version     = "0.38.0"
-  acl                      = "private"
-  enabled                  = true
-  user_enabled             = true
-  versioning_enabled       = false
-  allowed_bucket_actions   = ["s3:GetObject", "s3:ListBucket", "s3:GetBucketLocation"]
-  name                     = module.firehose_label.id
-  stage                    = module.this.stage
-  namespace                = module.this.namespace
-  bucket_name              = module.firehose_label.id
+  count                  = local.enabled && var.firehose_enabled ? 1 : 0
+  source                 = "cloudposse/s3-bucket/aws"
+  version                = "0.38.0"
+  acl                    = "private"
+  enabled                = true
+  user_enabled           = true
+  versioning_enabled     = false
+  allowed_bucket_actions = ["s3:GetObject", "s3:ListBucket", "s3:GetBucketLocation"]
+  name                   = module.firehose_label.id
+  stage                  = module.this.stage
+  namespace              = module.this.namespace
+  bucket_name            = module.firehose_label.id
 
-  context                  = module.this.context
+  context = module.this.context
 }
 
 resource "aws_iam_role" "firehose_role" {

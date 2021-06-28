@@ -19,6 +19,7 @@
 |------|--------|---------|
 | <a name="module_dns_firewall_label"></a> [dns\_firewall\_label](#module\_dns\_firewall\_label) | cloudposse/label/null | 0.24.1 |
 | <a name="module_firehose_label"></a> [firehose\_label](#module\_firehose\_label) | cloudposse/label/null | 0.24.1 |
+| <a name="module_firehose_s3_bucket"></a> [firehose\_s3\_bucket](#module\_firehose\_s3\_bucket) | cloudposse/s3-bucket/aws | 0.38.0 |
 | <a name="module_network_firewall_label"></a> [network\_firewall\_label](#module\_network\_firewall\_label) | cloudposse/label/null | 0.24.1 |
 | <a name="module_security_groups_common_label"></a> [security\_groups\_common\_label](#module\_security\_groups\_common\_label) | cloudposse/label/null | 0.24.1 |
 | <a name="module_security_groups_content_audit_label"></a> [security\_groups\_content\_audit\_label](#module\_security\_groups\_content\_audit\_label) | cloudposse/label/null | 0.24.1 |
@@ -43,7 +44,6 @@
 | [aws_fms_policy.waf_v2](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/fms_policy) | resource |
 | [aws_iam_role.firehose_role](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role) | resource |
 | [aws_kinesis_firehose_delivery_stream.firehose_stream](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/kinesis_firehose_delivery_stream) | resource |
-| [aws_s3_bucket.firehose_bucket](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket) | resource |
 
 ## Inputs
 
