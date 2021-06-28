@@ -7,10 +7,21 @@ module "firehose_label" {
   context = module.this.context
 }
 
-resource "aws_s3_bucket" "firehose_bucket" {
+module "firehose_s3_bucket" {
   count  = local.enabled && var.firehose_enabled ? 1 : 0
-  bucket = module.firehose_label.id
-  acl    = "private"
+  source = "cloudposse/s3-bucket/aws"
+  version     = "0.38.0"
+  acl                      = "private"
+  enabled                  = true
+  user_enabled             = true
+  versioning_enabled       = false
+  allowed_bucket_actions   = ["s3:GetObject", "s3:ListBucket", "s3:GetBucketLocation"]
+  name                     = module.firehose_label.id
+  stage                    = module.this.stage
+  namespace                = module.this.namespace
+  bucket_name              = module.firehose_label.id
+
+  context                  = module.this.context
 }
 
 resource "aws_iam_role" "firehose_role" {
@@ -42,6 +53,6 @@ resource "aws_kinesis_firehose_delivery_stream" "firehose_stream" {
 
   s3_configuration {
     role_arn   = join("", aws_iam_role.firehose_role.*.arn)
-    bucket_arn = join("", aws_s3_bucket.firehose_bucket.*.arn)
+    bucket_arn = join("", module.firehose_s3_bucket.*.bucket_arn)
   }
 }
