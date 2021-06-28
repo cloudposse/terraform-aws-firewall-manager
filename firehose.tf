@@ -24,25 +24,25 @@ module "firehose_s3_bucket" {
   context = module.this.context
 }
 
+data "aws_iam_policy_document" "assume_role" {
+  count = local.enabled ? 1 : 0
+
+  statement {
+    effect  = "Allow"
+    actions = ["sts:AssumeRole"]
+
+    principals {
+      type        = "Service"
+      identifiers = ["firehose.amazonaws.com"]
+    }
+  }
+}
+
 resource "aws_iam_role" "firehose_role" {
   count = local.enabled && var.firehose_enabled ? 1 : 0
   name  = module.firehose_label.id
 
-  assume_role_policy = <<EOF
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Action": "sts:AssumeRole",
-      "Principal": {
-        "Service": "firehose.amazonaws.com"
-      },
-      "Effect": "Allow",
-      "Sid": ""
-    }
-  ]
-}
-EOF
+  assume_role_policy = join("", data.aws_iam_policy_document.assume_role.*.json)
 }
 
 resource "aws_kinesis_firehose_delivery_stream" "firehose_stream" {
