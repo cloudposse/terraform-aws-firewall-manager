@@ -2,14 +2,14 @@ provider "aws" {
   region = var.region
 }
 
-module "vpc" {
-  source  = "cloudposse/vpc/aws"
-  version = "v0.26.1"
+# module "vpc" {
+#   source  = "cloudposse/vpc/aws"
+#   version = "v0.26.1"
 
-  cidr_block = "10.0.0.0/16"
+#   cidr_block = "10.0.0.0/16"
 
-  context = module.this.context
-}
+#   context = module.this.context
+# }
 
 module "fms" {
   source = "../.."
@@ -78,4 +78,9 @@ module "fms" {
   ]
 
   context = module.this.context
+
+  providers = {
+    aws.admin = aws.service
+    aws       = aws
+  }
 }
