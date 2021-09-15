@@ -54,4 +54,10 @@ resource "aws_fms_policy" "network_firewall" {
       }
     )
   }
+
+  lifecycle {
+    ignore_changes = [
+      policy_update_token,
+    ]
+  }
 }
