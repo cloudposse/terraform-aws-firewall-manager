@@ -48,6 +48,7 @@ resource "aws_fms_policy" "network_firewall" {
       networkFirewallOrchestrationConfig = {
         singleFirewallEndpointPerVPC = lookup(each.value.policy_data.orchestration_config, "single_firewall_endpoint_per_vpc", false)
         allowedIPV4CidrList          = lookup(each.value.policy_data.orchestration_config, "allowed_ipv4_cidrs", [])
+        routeManagementAction        = lookup(each.value.policy_data.orchestration_config, "route_management_action", "OFF")
       }
       }
     )
