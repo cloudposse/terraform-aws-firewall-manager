@@ -28,7 +28,7 @@ resource "aws_fms_policy" "network_firewall" {
   }
 
   dynamic "exclude_map" {
-    for_each = lookup(each.value, "exclude_account_ids", null) != null ? [1] : []
+    for_each = lookup(each.value, "exclude_account_ids", [])
 
     content {
       account = exclude_map.value
