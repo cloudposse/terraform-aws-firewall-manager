@@ -12,9 +12,7 @@ locals {
 
   logging_config_firehose_arn     = { logDestinationConfigs : [var.firehose_arn], redactedFields : [{ redactedFieldType : "SingleHeader", redactedFieldValue : "Cookies" }, { redactedFieldType : "Method" }] }
   logging_config_firehose_enabled = { logDestinationConfigs : [join("", aws_kinesis_firehose_delivery_stream.firehose_stream.*.id)], redactedFields : [{ redactedFieldType : "SingleHeader", redactedFieldValue : "Cookies" }, { redactedFieldType : "Method" }] }
-  #logging_configuration           = local.enabled && var.firehose_enabled ? tomap(local.logging_config_firehose_enabled) : local.enabled && var.firehose_arn != null ? tomap(local.logging_config_firehose_arn) : null
-  logging_configuration = local.enabled && var.firehose_enabled ? local.logging_config_firehose_enabled : local.enabled && var.firehose_arn != null ? local.logging_config_firehose_arn : null
-  #logging_configuration = local.enabled && var.firehose_enabled ? local.logging_config_firehose_enabled : local.logging_config_firehose_arn
+  logging_configuration           = local.enabled && var.firehose_enabled ? local.logging_config_firehose_enabled : local.enabled && var.firehose_arn != null ? local.logging_config_firehose_arn : null
 }
 
 resource "aws_fms_admin_account" "default" {
