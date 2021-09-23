@@ -42,6 +42,7 @@ resource "aws_fms_policy" "security_groups_usage_audit" {
       type                            = "SECURITY_GROUPS_USAGE_AUDIT"
       deleteUnusedSecurityGroups      = lookup(each.value.policy_data, "delete_unused_security_groups", false)
       coalesceRedundantSecurityGroups = lookup(each.value.policy_data, "coalesce_redundant_security_groups", false)
+      optionalDelayForUnusedInMinutes = lookup(each.value.policy_data, "optionalDelayForUnusedInMinutes", null)
     })
   }
 }
