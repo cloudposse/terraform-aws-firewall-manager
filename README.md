@@ -464,12 +464,14 @@ Check out [our other projects][github], [follow us on twitter][twitter], [apply 
 ### Contributors
 
 <!-- markdownlint-disable -->
-|  [![Vladimir Syromyatnikov][SweetOps_avatar]][SweetOps_homepage]<br/>[Vladimir Syromyatnikov][SweetOps_homepage] |
-|---|
+|  [![Vladimir Syromyatnikov][SweetOps_avatar]][SweetOps_homepage]<br/>[Vladimir Syromyatnikov][SweetOps_homepage] | [![Benjamin Smith][Benbentwo_avatar]][Benbentwo_homepage]<br/>[Benjamin Smith][Benbentwo_homepage] |
+|---|---|
 <!-- markdownlint-restore -->
 
   [SweetOps_homepage]: https://github.com/SweetOps
   [SweetOps_avatar]: https://img.cloudposse.com/150x150/https://github.com/SweetOps.png
+  [Benbentwo_homepage]: https://github.com/Benbentwo
+  [Benbentwo_avatar]: https://img.cloudposse.com/150x150/https://github.com/Benbentwo.png
 
 [![README Footer][readme_footer_img]][readme_footer_link]
 [![Beacon][beacon]][website]
