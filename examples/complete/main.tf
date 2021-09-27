@@ -22,12 +22,12 @@ module "firewall_manager" {
   context = module.this.context
 
 
-  shiled_advanced_policies               = var.shield_advanced_policies
-  waf_policies                           = var.waf_policies
-  dns_firewall_policies                  = var.dns_firewall_policies
-  network_firewall_policies              = var.network_firewall_policies
-  firehose_enabled                       = var.firehose_enabled
-  firehose_arn                           = var.firehose_arn
+  shiled_advanced_policies  = var.shield_advanced_policies
+  waf_policies              = var.waf_policies
+  dns_firewall_policies     = var.dns_firewall_policies
+  network_firewall_policies = var.network_firewall_policies
+  firehose_enabled          = var.firehose_enabled
+  firehose_arn              = var.firehose_arn
 
   admin_account_enabled = false
   admin_account_id      = "222222222222"
