@@ -1,3 +1,8 @@
+variable "region" {
+  type = string
+  description = "AWS Region"
+}
+
 variable "organization_management_role_arn" {
   type        = string
   description = "The ARN of the role you assume for provisioning this component - must be a root account for setting up Firewall Manager Admin Account"
