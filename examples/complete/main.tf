@@ -1,5 +1,5 @@
 locals {
-  assumed_arn = var.is_destroy ? var.firewall_manager_administrator_role_arn : var.organization_management_role_arn
+  assume_role_arn = var.is_destroy ? var.firewall_manager_administrator_role_arn : var.organization_management_role_arn
 }
 
 module "vpc" {
@@ -18,9 +18,6 @@ module "firewall_manager" {
     aws.admin = aws.admin
     aws       = aws
   }
-
-  context = module.this.context
-
 
   shiled_advanced_policies  = var.shield_advanced_policies
   waf_policies              = var.waf_policies
@@ -95,4 +92,5 @@ module "firewall_manager" {
     }
   ]
 
+  context = module.this.context
 }
