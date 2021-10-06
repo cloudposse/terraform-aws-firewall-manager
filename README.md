@@ -215,6 +215,7 @@ Available targets:
   help/all                            Display help for all targets
   help/short                          This help short screen
   lint                                Lint terraform code
+  test/%                              Run Terraform commands in the examples/complete folder; e.g. make test/plan
 
 ```
 <!-- markdownlint-restore -->
@@ -302,7 +303,7 @@ Available targets:
 
 | Name | Description |
 |------|-------------|
-| <a name="output_admin_account"></a> [admin\_account](#output\_admin\_account) | n/a |
+| <a name="output_admin_account"></a> [admin\_account](#output\_admin\_account) | AWS Account ID of the designated admin account. |
 <!-- markdownlint-restore -->
 
 
@@ -464,12 +465,14 @@ Check out [our other projects][github], [follow us on twitter][twitter], [apply 
 ### Contributors
 
 <!-- markdownlint-disable -->
-|  [![Vladimir Syromyatnikov][SweetOps_avatar]][SweetOps_homepage]<br/>[Vladimir Syromyatnikov][SweetOps_homepage] |
-|---|
+|  [![Vladimir Syromyatnikov][SweetOps_avatar]][SweetOps_homepage]<br/>[Vladimir Syromyatnikov][SweetOps_homepage] | [![Benjamin Smith][Benbentwo_avatar]][Benbentwo_homepage]<br/>[Benjamin Smith][Benbentwo_homepage] |
+|---|---|
 <!-- markdownlint-restore -->
 
   [SweetOps_homepage]: https://github.com/SweetOps
   [SweetOps_avatar]: https://img.cloudposse.com/150x150/https://github.com/SweetOps.png
+  [Benbentwo_homepage]: https://github.com/Benbentwo
+  [Benbentwo_avatar]: https://img.cloudposse.com/150x150/https://github.com/Benbentwo.png
 
 [![README Footer][readme_footer_img]][readme_footer_link]
 [![Beacon][beacon]][website]

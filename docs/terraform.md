@@ -82,5 +82,5 @@
 
 | Name | Description |
 |------|-------------|
-| <a name="output_admin_account"></a> [admin\_account](#output\_admin\_account) | n/a |
+| <a name="output_admin_account"></a> [admin\_account](#output\_admin\_account) | AWS Account ID of the designated admin account. |
 <!-- markdownlint-restore -->
