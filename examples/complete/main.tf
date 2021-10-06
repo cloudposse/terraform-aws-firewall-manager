@@ -1,5 +1,5 @@
-provider "aws" {
-  region = var.region
+locals {
+  assume_role_arn = var.is_destroy ? var.firewall_manager_administrator_role_arn : var.organization_management_role_arn
 }
 
 module "vpc" {
@@ -11,8 +11,23 @@ module "vpc" {
   context = module.this.context
 }
 
-module "fms" {
-  source = "../.."
+module "firewall_manager" {
+  source = "../../"
+
+  providers = {
+    aws.admin = aws.admin
+    aws       = aws
+  }
+
+  shiled_advanced_policies  = var.shield_advanced_policies
+  waf_policies              = var.waf_policies
+  dns_firewall_policies     = var.dns_firewall_policies
+  network_firewall_policies = var.network_firewall_policies
+  firehose_enabled          = var.firehose_enabled
+  firehose_arn              = var.firehose_arn
+
+  admin_account_enabled = false
+  admin_account_id      = "222222222222"
 
   security_groups_usage_audit_policies = [
     {
