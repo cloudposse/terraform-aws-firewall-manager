@@ -215,6 +215,7 @@ Available targets:
   help/all                            Display help for all targets
   help/short                          This help short screen
   lint                                Lint terraform code
+  test/%                              Run Terraform commands in the examples/complete folder; e.g. make test/plan
 
 ```
 <!-- markdownlint-restore -->
@@ -302,7 +303,15 @@ Available targets:
 
 | Name | Description |
 |------|-------------|
-| <a name="output_admin_account"></a> [admin\_account](#output\_admin\_account) | n/a |
+| <a name="output_admin_account"></a> [admin\_account](#output\_admin\_account) | AWS Account ID of the designated admin account. |
+| <a name="output_dns_firewall_ids"></a> [dns\_firewall\_ids](#output\_dns\_firewall\_ids) | List of Policy DNS Firewall Rules IDs. |
+| <a name="output_network_firewall_ids"></a> [network\_firewall\_ids](#output\_network\_firewall\_ids) | List of Policy Network Firewall Rules IDs. |
+| <a name="output_security_groups_common_ids"></a> [security\_groups\_common\_ids](#output\_security\_groups\_common\_ids) | List of Policy Security Group Common IDs. |
+| <a name="output_security_groups_content_audit_ids"></a> [security\_groups\_content\_audit\_ids](#output\_security\_groups\_content\_audit\_ids) | List of Policy Security Content Audit IDs. |
+| <a name="output_security_groups_usage_audit_ids"></a> [security\_groups\_usage\_audit\_ids](#output\_security\_groups\_usage\_audit\_ids) | List of Policy Security Usage Audit IDs. |
+| <a name="output_shield_advanced_ids"></a> [shield\_advanced\_ids](#output\_shield\_advanced\_ids) | List of Policy Shield Advanced IDs. |
+| <a name="output_waf_ids"></a> [waf\_ids](#output\_waf\_ids) | List of WAF Policy IDs. |
+| <a name="output_waf_v2_ids"></a> [waf\_v2\_ids](#output\_waf\_v2\_ids) | List of WAF v2 Policy IDs. |
 <!-- markdownlint-restore -->
 
 
@@ -464,12 +473,14 @@ Check out [our other projects][github], [follow us on twitter][twitter], [apply 
 ### Contributors
 
 <!-- markdownlint-disable -->
-|  [![Vladimir Syromyatnikov][SweetOps_avatar]][SweetOps_homepage]<br/>[Vladimir Syromyatnikov][SweetOps_homepage] |
-|---|
+|  [![Vladimir Syromyatnikov][SweetOps_avatar]][SweetOps_homepage]<br/>[Vladimir Syromyatnikov][SweetOps_homepage] | [![Benjamin Smith][Benbentwo_avatar]][Benbentwo_homepage]<br/>[Benjamin Smith][Benbentwo_homepage] |
+|---|---|
 <!-- markdownlint-restore -->
 
   [SweetOps_homepage]: https://github.com/SweetOps
   [SweetOps_avatar]: https://img.cloudposse.com/150x150/https://github.com/SweetOps.png
+  [Benbentwo_homepage]: https://github.com/Benbentwo
+  [Benbentwo_avatar]: https://img.cloudposse.com/150x150/https://github.com/Benbentwo.png
 
 [![README Footer][readme_footer_img]][readme_footer_link]
 [![Beacon][beacon]][website]
