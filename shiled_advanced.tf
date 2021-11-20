@@ -2,7 +2,7 @@ module "shiled_advanced_label" {
   for_each = local.shiled_advanced_policies
 
   source  = "cloudposse/label/null"
-  version = "0.24.1"
+  version = "0.25.0"
 
   attributes = [each.key]
   context    = module.this.context

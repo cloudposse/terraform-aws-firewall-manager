@@ -2,7 +2,7 @@ module "waf_v2_label" {
   for_each = local.waf_v2_policies
 
   source  = "cloudposse/label/null"
-  version = "0.24.1"
+  version = "0.25.0"
 
   attributes = [each.key]
   context    = module.this.context
