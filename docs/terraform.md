@@ -17,17 +17,17 @@
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_dns_firewall_label"></a> [dns\_firewall\_label](#module\_dns\_firewall\_label) | cloudposse/label/null | 0.24.1 |
-| <a name="module_firehose_label"></a> [firehose\_label](#module\_firehose\_label) | cloudposse/label/null | 0.24.1 |
+| <a name="module_dns_firewall_label"></a> [dns\_firewall\_label](#module\_dns\_firewall\_label) | cloudposse/label/null | 0.25.0 |
+| <a name="module_firehose_label"></a> [firehose\_label](#module\_firehose\_label) | cloudposse/label/null | 0.25.0 |
 | <a name="module_firehose_s3_bucket"></a> [firehose\_s3\_bucket](#module\_firehose\_s3\_bucket) | cloudposse/s3-bucket/aws | 0.38.0 |
-| <a name="module_network_firewall_label"></a> [network\_firewall\_label](#module\_network\_firewall\_label) | cloudposse/label/null | 0.24.1 |
-| <a name="module_security_groups_common_label"></a> [security\_groups\_common\_label](#module\_security\_groups\_common\_label) | cloudposse/label/null | 0.24.1 |
-| <a name="module_security_groups_content_audit_label"></a> [security\_groups\_content\_audit\_label](#module\_security\_groups\_content\_audit\_label) | cloudposse/label/null | 0.24.1 |
-| <a name="module_security_groups_usage_audit_label"></a> [security\_groups\_usage\_audit\_label](#module\_security\_groups\_usage\_audit\_label) | cloudposse/label/null | 0.24.1 |
-| <a name="module_shiled_advanced_label"></a> [shiled\_advanced\_label](#module\_shiled\_advanced\_label) | cloudposse/label/null | 0.24.1 |
+| <a name="module_network_firewall_label"></a> [network\_firewall\_label](#module\_network\_firewall\_label) | cloudposse/label/null | 0.25.0 |
+| <a name="module_security_groups_common_label"></a> [security\_groups\_common\_label](#module\_security\_groups\_common\_label) | cloudposse/label/null | 0.25.0 |
+| <a name="module_security_groups_content_audit_label"></a> [security\_groups\_content\_audit\_label](#module\_security\_groups\_content\_audit\_label) | cloudposse/label/null | 0.25.0 |
+| <a name="module_security_groups_usage_audit_label"></a> [security\_groups\_usage\_audit\_label](#module\_security\_groups\_usage\_audit\_label) | cloudposse/label/null | 0.25.0 |
+| <a name="module_shiled_advanced_label"></a> [shiled\_advanced\_label](#module\_shiled\_advanced\_label) | cloudposse/label/null | 0.25.0 |
 | <a name="module_this"></a> [this](#module\_this) | cloudposse/label/null | 0.24.1 |
-| <a name="module_waf_label"></a> [waf\_label](#module\_waf\_label) | cloudposse/label/null | 0.24.1 |
-| <a name="module_waf_v2_label"></a> [waf\_v2\_label](#module\_waf\_v2\_label) | cloudposse/label/null | 0.24.1 |
+| <a name="module_waf_label"></a> [waf\_label](#module\_waf\_label) | cloudposse/label/null | 0.25.0 |
+| <a name="module_waf_v2_label"></a> [waf\_v2\_label](#module\_waf\_v2\_label) | cloudposse/label/null | 0.25.0 |
 
 ## Resources
 
