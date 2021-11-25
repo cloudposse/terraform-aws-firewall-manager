@@ -81,101 +81,118 @@ usage: |-
   (which tests and deploys the example on AWS), see [test](test).
 
   ```hcl
+  module "label" {
+    source = "cloudposse/label/null"
+    # Cloud Posse recommends pinning every module to a specific version
+    # version = "x.x.x"
 
-    module "label" {
-      source = "cloudposse/label/null"
-      # Cloud Posse recommends pinning every module to a specific version
-      # version = "x.x.x"
-      namespace = "eg"
-      stage     = "prod"
-      name      = "fms"
-      delimiter = "-"
+    namespace = "eg"
+    stage     = "prod"
+    name      = "fms"
+    delimiter = "-"
 
-      tags = {
-        "BusinessUnit" = "XYZ",
+    tags = {
+      "BusinessUnit" = "XYZ",
+    }
+  }
+
+  module "vpc" {
+    source  = "cloudposse/vpc/aws"
+    # Cloud Posse recommends pinning every module to a specific version
+    # version = "x.x.x"
+
+    cidr_block = "10.0.0.0/16"
+
+    context = module.label.context
+  }
+
+  provider "aws" {
+    region = "us-east-2"
+  }
+
+  provider "aws" {
+    region = "us-east-2"
+    alias  = "admin"
+    assume_role {
+      role_arn = "arn:aws:xyz"
+    }
+  }
+
+  module "fms" {
+    source = "cloudposse/firewall-manager/aws"
+    # Cloud Posse recommends pinning every module to a specific version
+    # version = "x.x.x"
+
+    providers = {
+      aws.admin = aws.admin
+      aws       = aws
+    }
+
+    security_groups_usage_audit_policies = [
+      {
+        name               = "unused-sg"
+        resource_type_list = ["AWS::EC2::SecurityGroup"]
+
+        policy_data = {
+          delete_unused_security_groups      = false
+          coalesce_redundant_security_groups = false
+        }
       }
-    }
+    ]
 
-    module "vpc" {
-      source  = "cloudposse/vpc/aws"
-      # Cloud Posse recommends pinning every module to a specific version
-      # version = "x.x.x"
+    security_groups_content_audit_policies = [
+      {
+        name               = "maxmimum-allowed"
+        resource_type_list = ["AWS::EC2::SecurityGroup"]
 
-      cidr_block = "10.0.0.0/16"
-
-      context = module.label.context
-    }
-
-    module "fms" {
-      source = "cloudposse/firewall-manager/aws"
-      # Cloud Posse recommends pinning every module to a specific version
-      # version = "x.x.x"
-
-      security_groups_usage_audit_policies = [
-        {
-          name               = "unused-sg"
-          resource_type_list = ["AWS::EC2::SecurityGroup"]
-
-          policy_data = {
-            delete_unused_security_groups      = false
-            coalesce_redundant_security_groups = false
-          }
+        policy_data = {
+          security_group_action = "allow"
+          security_groups       = [module.vpc.security_group_id]
         }
-      ]
+      }
+    ]
 
-      security_groups_content_audit_policies = [
-        {
-          name               = "maxmimum-allowed"
-          resource_type_list = ["AWS::EC2::SecurityGroup"]
+    security_groups_common_policies = [
+      {
+        name               = "disabled-all"
+        resource_type_list = ["AWS::EC2::SecurityGroup"]
 
-          policy_data = {
-            security_group_action = "allow"
-            security_groups       = [module.vpc.security_group_id]
-          }
+        policy_data = {
+          revert_manual_security_group_changes         = false
+          exclusive_resource_security_group_management = false
+          apply_to_all_ec2_instance_enis               = false
+          security_groups                              = [module.vpc.security_group_id]
         }
-      ]
+      }
+    ]
 
-      security_groups_common_policies = [
-        {
-          name               = "disabled-all"
-          resource_type_list = ["AWS::EC2::SecurityGroup"]
+    waf_v2_policies = [
+      {
+        name               = "linux-policy"
+        resource_type_list = ["AWS::ElasticLoadBalancingV2::LoadBalancer", "AWS::ApiGateway::Stage"]
 
-          policy_data = {
-            revert_manual_security_group_changes         = false
-            exclusive_resource_security_group_management = false
-            apply_to_all_ec2_instance_enis               = false
-            security_groups                              = [module.vpc.security_group_id]
-          }
+        policy_data = {
+          default_action                        = "allow"
+          override_customer_web_acl_association = false
+          pre_process_rule_groups = [
+            {
+              "managedRuleGroupIdentifier" : {
+                "vendorName" : "AWS",
+                "managedRuleGroupName" : "AWSManagedRulesLinuxRuleSet",
+                "version" : null
+              },
+              "overrideAction" : { "type" : "NONE" },
+              "ruleGroupArn" : null,
+              "excludeRules" : [],
+              "ruleGroupType" : "ManagedRuleGroup"
+            }
+          ]
         }
-      ]
+      }
+    ]
 
-      waf_v2_policies = [
-        {
-          name               = "linux-policy"
-          resource_type_list = ["AWS::ElasticLoadBalancingV2::LoadBalancer", "AWS::ApiGateway::Stage"]
-
-          policy_data = {
-            default_action                        = "allow"
-            override_customer_web_acl_association = false
-            pre_process_rule_groups = [
-              {
-                "managedRuleGroupIdentifier" : {
-                  "vendorName" : "AWS",
-                  "managedRuleGroupName" : "AWSManagedRulesLinuxRuleSet",
-                  "version" : null
-                },
-                "overrideAction" : { "type" : "NONE" },
-                "ruleGroupArn" : null,
-                "excludeRules" : [],
-                "ruleGroupType" : "ManagedRuleGroup"
-              }
-            ]
-          }
-        }
-      ]
-
-      context = module.label.context
-    }
+    context = module.label.context
+  }
   ```
 
 # Example usage
@@ -198,3 +215,5 @@ contributors:
     github: SweetOps
   - name: Benjamin Smith
     github: Benbentwo
+  - name: RB
+    github: nitrocode

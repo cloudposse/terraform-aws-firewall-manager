@@ -99,101 +99,118 @@ For automated tests of the complete example using [bats](https://github.com/bats
 (which tests and deploys the example on AWS), see [test](test).
 
 ```hcl
+module "label" {
+  source = "cloudposse/label/null"
+  # Cloud Posse recommends pinning every module to a specific version
+  # version = "x.x.x"
 
-  module "label" {
-    source = "cloudposse/label/null"
-    # Cloud Posse recommends pinning every module to a specific version
-    # version = "x.x.x"
-    namespace = "eg"
-    stage     = "prod"
-    name      = "fms"
-    delimiter = "-"
+  namespace = "eg"
+  stage     = "prod"
+  name      = "fms"
+  delimiter = "-"
 
-    tags = {
-      "BusinessUnit" = "XYZ",
+  tags = {
+    "BusinessUnit" = "XYZ",
+  }
+}
+
+module "vpc" {
+  source  = "cloudposse/vpc/aws"
+  # Cloud Posse recommends pinning every module to a specific version
+  # version = "x.x.x"
+
+  cidr_block = "10.0.0.0/16"
+
+  context = module.label.context
+}
+
+provider "aws" {
+  region = "us-east-2"
+}
+
+provider "aws" {
+  region = "us-east-2"
+  alias  = "admin"
+  assume_role {
+    role_arn = "arn:aws:xyz"
+  }
+}
+
+module "fms" {
+  source = "cloudposse/firewall-manager/aws"
+  # Cloud Posse recommends pinning every module to a specific version
+  # version = "x.x.x"
+
+  providers = {
+    aws.admin = aws.admin
+    aws       = aws
+  }
+
+  security_groups_usage_audit_policies = [
+    {
+      name               = "unused-sg"
+      resource_type_list = ["AWS::EC2::SecurityGroup"]
+
+      policy_data = {
+        delete_unused_security_groups      = false
+        coalesce_redundant_security_groups = false
+      }
     }
-  }
+  ]
 
-  module "vpc" {
-    source  = "cloudposse/vpc/aws"
-    # Cloud Posse recommends pinning every module to a specific version
-    # version = "x.x.x"
+  security_groups_content_audit_policies = [
+    {
+      name               = "maxmimum-allowed"
+      resource_type_list = ["AWS::EC2::SecurityGroup"]
 
-    cidr_block = "10.0.0.0/16"
-
-    context = module.label.context
-  }
-
-  module "fms" {
-    source = "cloudposse/firewall-manager/aws"
-    # Cloud Posse recommends pinning every module to a specific version
-    # version = "x.x.x"
-
-    security_groups_usage_audit_policies = [
-      {
-        name               = "unused-sg"
-        resource_type_list = ["AWS::EC2::SecurityGroup"]
-
-        policy_data = {
-          delete_unused_security_groups      = false
-          coalesce_redundant_security_groups = false
-        }
+      policy_data = {
+        security_group_action = "allow"
+        security_groups       = [module.vpc.security_group_id]
       }
-    ]
+    }
+  ]
 
-    security_groups_content_audit_policies = [
-      {
-        name               = "maxmimum-allowed"
-        resource_type_list = ["AWS::EC2::SecurityGroup"]
+  security_groups_common_policies = [
+    {
+      name               = "disabled-all"
+      resource_type_list = ["AWS::EC2::SecurityGroup"]
 
-        policy_data = {
-          security_group_action = "allow"
-          security_groups       = [module.vpc.security_group_id]
-        }
+      policy_data = {
+        revert_manual_security_group_changes         = false
+        exclusive_resource_security_group_management = false
+        apply_to_all_ec2_instance_enis               = false
+        security_groups                              = [module.vpc.security_group_id]
       }
-    ]
+    }
+  ]
 
-    security_groups_common_policies = [
-      {
-        name               = "disabled-all"
-        resource_type_list = ["AWS::EC2::SecurityGroup"]
+  waf_v2_policies = [
+    {
+      name               = "linux-policy"
+      resource_type_list = ["AWS::ElasticLoadBalancingV2::LoadBalancer", "AWS::ApiGateway::Stage"]
 
-        policy_data = {
-          revert_manual_security_group_changes         = false
-          exclusive_resource_security_group_management = false
-          apply_to_all_ec2_instance_enis               = false
-          security_groups                              = [module.vpc.security_group_id]
-        }
+      policy_data = {
+        default_action                        = "allow"
+        override_customer_web_acl_association = false
+        pre_process_rule_groups = [
+          {
+            "managedRuleGroupIdentifier" : {
+              "vendorName" : "AWS",
+              "managedRuleGroupName" : "AWSManagedRulesLinuxRuleSet",
+              "version" : null
+            },
+            "overrideAction" : { "type" : "NONE" },
+            "ruleGroupArn" : null,
+            "excludeRules" : [],
+            "ruleGroupType" : "ManagedRuleGroup"
+          }
+        ]
       }
-    ]
+    }
+  ]
 
-    waf_v2_policies = [
-      {
-        name               = "linux-policy"
-        resource_type_list = ["AWS::ElasticLoadBalancingV2::LoadBalancer", "AWS::ApiGateway::Stage"]
-
-        policy_data = {
-          default_action                        = "allow"
-          override_customer_web_acl_association = false
-          pre_process_rule_groups = [
-            {
-              "managedRuleGroupIdentifier" : {
-                "vendorName" : "AWS",
-                "managedRuleGroupName" : "AWSManagedRulesLinuxRuleSet",
-                "version" : null
-              },
-              "overrideAction" : { "type" : "NONE" },
-              "ruleGroupArn" : null,
-              "excludeRules" : [],
-              "ruleGroupType" : "ManagedRuleGroup"
-            }
-          ]
-        }
-      }
-    ]
-
-    context = module.label.context
-  }
+  context = module.label.context
+}
 ```
 
 
@@ -225,14 +242,14 @@ Available targets:
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 0.15.0 |
-| <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 2.0 |
+| <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 3.0 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | >= 2.0 |
-| <a name="provider_aws.admin"></a> [aws.admin](#provider\_aws.admin) | >= 2.0 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | >= 3.0 |
+| <a name="provider_aws.admin"></a> [aws.admin](#provider\_aws.admin) | >= 3.0 |
 
 ## Modules
 
@@ -240,7 +257,7 @@ Available targets:
 |------|--------|---------|
 | <a name="module_dns_firewall_label"></a> [dns\_firewall\_label](#module\_dns\_firewall\_label) | cloudposse/label/null | 0.25.0 |
 | <a name="module_firehose_label"></a> [firehose\_label](#module\_firehose\_label) | cloudposse/label/null | 0.25.0 |
-| <a name="module_firehose_s3_bucket"></a> [firehose\_s3\_bucket](#module\_firehose\_s3\_bucket) | cloudposse/s3-bucket/aws | 0.38.0 |
+| <a name="module_firehose_s3_bucket"></a> [firehose\_s3\_bucket](#module\_firehose\_s3\_bucket) | cloudposse/s3-bucket/aws | 0.44.1 |
 | <a name="module_network_firewall_label"></a> [network\_firewall\_label](#module\_network\_firewall\_label) | cloudposse/label/null | 0.25.0 |
 | <a name="module_security_groups_common_label"></a> [security\_groups\_common\_label](#module\_security\_groups\_common\_label) | cloudposse/label/null | 0.25.0 |
 | <a name="module_security_groups_content_audit_label"></a> [security\_groups\_content\_audit\_label](#module\_security\_groups\_content\_audit\_label) | cloudposse/label/null | 0.25.0 |
@@ -468,14 +485,16 @@ Check out [our other projects][github], [follow us on twitter][twitter], [apply 
 ### Contributors
 
 <!-- markdownlint-disable -->
-|  [![Vladimir Syromyatnikov][SweetOps_avatar]][SweetOps_homepage]<br/>[Vladimir Syromyatnikov][SweetOps_homepage] | [![Benjamin Smith][Benbentwo_avatar]][Benbentwo_homepage]<br/>[Benjamin Smith][Benbentwo_homepage] |
-|---|---|
+|  [![Vladimir Syromyatnikov][SweetOps_avatar]][SweetOps_homepage]<br/>[Vladimir Syromyatnikov][SweetOps_homepage] | [![Benjamin Smith][Benbentwo_avatar]][Benbentwo_homepage]<br/>[Benjamin Smith][Benbentwo_homepage] | [![RB][nitrocode_avatar]][nitrocode_homepage]<br/>[RB][nitrocode_homepage] |
+|---|---|---|
 <!-- markdownlint-restore -->
 
   [SweetOps_homepage]: https://github.com/SweetOps
   [SweetOps_avatar]: https://img.cloudposse.com/150x150/https://github.com/SweetOps.png
   [Benbentwo_homepage]: https://github.com/Benbentwo
   [Benbentwo_avatar]: https://img.cloudposse.com/150x150/https://github.com/Benbentwo.png
+  [nitrocode_homepage]: https://github.com/nitrocode
+  [nitrocode_avatar]: https://img.cloudposse.com/150x150/https://github.com/nitrocode.png
 
 [![README Footer][readme_footer_img]][readme_footer_link]
 [![Beacon][beacon]][website]
