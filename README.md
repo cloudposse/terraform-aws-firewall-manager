@@ -99,18 +99,6 @@ For automated tests of the complete example using [bats](https://github.com/bats
 (which tests and deploys the example on AWS), see [test](test).
 
 ```hcl
-provider "aws" {
-  region = "us-east-2"
-}
-
-provider "aws" {
-  region = "us-east-2"
-  alias  = "admin"
-  assume_role {
-    role_arn = "arn:aws:xyz"
-  }
-}
-
 module "label" {
   source = "cloudposse/label/null"
   # Cloud Posse recommends pinning every module to a specific version
@@ -136,14 +124,26 @@ module "vpc" {
   context = module.label.context
 }
 
+provider "aws" {
+  region = "us-east-2"
+}
+
+provider "aws" {
+  region = "us-east-2"
+  alias  = "admin"
+  assume_role {
+    role_arn = "arn:aws:xyz"
+  }
+}
+
 module "fms" {
   source = "cloudposse/firewall-manager/aws"
   # Cloud Posse recommends pinning every module to a specific version
   # version = "x.x.x"
 
   providers = {
-    aws.admin,
-    aws
+    aws.admin = aws.admin
+    aws       = aws
   }
 
   security_groups_usage_audit_policies = [
