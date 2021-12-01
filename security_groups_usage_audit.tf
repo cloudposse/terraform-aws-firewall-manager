@@ -20,7 +20,7 @@ resource "aws_fms_policy" "security_groups_usage_audit" {
   resource_tags               = lookup(each.value, "resource_tags", null)
 
   dynamic "include_map" {
-    for_each = lookup(each.value, "include_account_ids", null) != null ? [1] : []
+    for_each = lookup(each.value, "include_account_ids", [])
 
     content {
       account = include_map.value
@@ -28,7 +28,7 @@ resource "aws_fms_policy" "security_groups_usage_audit" {
   }
 
   dynamic "exclude_map" {
-    for_each = lookup(each.value, "exclude_account_ids", null) != null ? [1] : []
+    for_each = lookup(each.value, "exclude_account_ids", [])
 
     content {
       account = exclude_map.value
@@ -42,6 +42,7 @@ resource "aws_fms_policy" "security_groups_usage_audit" {
       type                            = "SECURITY_GROUPS_USAGE_AUDIT"
       deleteUnusedSecurityGroups      = lookup(each.value.policy_data, "delete_unused_security_groups", false)
       coalesceRedundantSecurityGroups = lookup(each.value.policy_data, "coalesce_redundant_security_groups", false)
+      optionalDelayForUnusedInMinutes = lookup(each.value.policy_data, "optionalDelayForUnusedInMinutes", null)
     })
   }
 }

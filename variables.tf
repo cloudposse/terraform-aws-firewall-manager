@@ -134,7 +134,7 @@ variable "security_groups_usage_audit_policies" {
   DOC
 }
 
-variable "shiled_advanced_policies" {
+variable "shield_advanced_policies" {
   type        = list(any)
   default     = []
   description = <<-DOC
