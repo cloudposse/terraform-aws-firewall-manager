@@ -20,7 +20,7 @@ resource "aws_fms_policy" "dns_firewall" {
   resource_tags               = lookup(each.value, "resource_tags", null)
 
   dynamic "include_map" {
-    for_each = lookup(each.value, "include_account_ids", null) != null ? [1] : []
+    for_each = lookup(each.value, "include_account_ids", [])
 
     content {
       account = include_map.value
@@ -28,7 +28,7 @@ resource "aws_fms_policy" "dns_firewall" {
   }
 
   dynamic "exclude_map" {
-    for_each = lookup(each.value, "exclude_account_ids", null) != null ? [1] : []
+    for_each = lookup(each.value, "exclude_account_ids", [])
 
     content {
       account = exclude_map.value
