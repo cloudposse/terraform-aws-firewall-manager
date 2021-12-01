@@ -2,7 +2,7 @@ module "security_groups_usage_audit_label" {
   for_each = local.security_groups_usage_audit_policies
 
   source  = "cloudposse/label/null"
-  version = "0.24.1"
+  version = "0.25.0"
 
   attributes = [each.key]
   context    = module.this.context
