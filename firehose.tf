@@ -10,7 +10,7 @@ module "firehose_label" {
 module "firehose_s3_bucket" {
   count                  = local.enabled && var.firehose_enabled ? 1 : 0
   source                 = "cloudposse/s3-bucket/aws"
-  version                = "0.38.0"
+  version                = "0.49.0"
   acl                    = "private"
   enabled                = true
   user_enabled           = true
@@ -20,6 +20,9 @@ module "firehose_s3_bucket" {
   stage                  = module.this.stage
   namespace              = module.this.namespace
   bucket_name            = module.firehose_label.id
+  s3_replication_enabled = false
+  replication_rules      = []
+  s3_replication_rules   = []
 
   context = module.this.context
 }
