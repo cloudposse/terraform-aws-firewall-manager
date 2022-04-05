@@ -19,7 +19,7 @@ module "firewall_manager" {
     aws       = aws
   }
 
-  shiled_advanced_policies  = var.shield_advanced_policies
+  shield_advanced_policies  = var.shield_advanced_policies
   waf_policies              = var.waf_policies
   dns_firewall_policies     = var.dns_firewall_policies
   network_firewall_policies = var.network_firewall_policies
