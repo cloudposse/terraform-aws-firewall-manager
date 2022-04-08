@@ -1,8 +1,11 @@
 locals {
   lifecycle_configuration_rules = [{
-    enabled = true # bool
-    abort_incomplete_multipart_upload_days = 1 # number
-    expiration_days = 30
+    enabled                                = true # bool
+    abort_incomplete_multipart_upload_days = 1    # number
+    expiration_days                        = 30
+    tags = {
+      terraform = true
+    }
   }]
 }
 
