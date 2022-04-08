@@ -23,6 +23,7 @@ module "firehose_s3_bucket" {
   s3_replication_enabled = false
   replication_rules      = []
   s3_replication_rules   = []
+  policy                 = data.aws_iam_policy_document.web_acl_organization_shared_logs.json
 
   context = module.this.context
 }
@@ -39,6 +40,39 @@ data "aws_iam_policy_document" "assume_role" {
       identifiers = ["firehose.amazonaws.com"]
     }
   }
+}
+
+data "aws_organizations_organization" "organization" {}
+data "aws_iam_policy_document" "web_acl_organization_shared_logs" {
+  name   = "WebAClPutObject"
+  policy = <<EOF
+{
+  "Version": "2012-10-17",
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "WriteWAFLogs",
+            "Effect": "Allow",
+            "Principal": "*",
+            "Action": [
+                "s3:ListBucket",
+                "s3:GetObject",
+                "s3:PutObject"
+            ],
+            "Resource": [
+                "arn:aws:s3:::${module.firehose_label.id}",
+                "arn:aws:s3:::${module.firehose_label.id}/*"
+            ],
+            "Condition": {
+                "StringEquals": {
+                    "aws:PrincipalOrgID": "${data.aws_organizations_organization.organization.id}"
+                }
+            }
+        }
+    ]
+}
+EOF
 }
 
 resource "aws_iam_role" "firehose_role" {
@@ -59,3 +93,4 @@ resource "aws_kinesis_firehose_delivery_stream" "firehose_stream" {
     bucket_arn = join("", module.firehose_s3_bucket.*.bucket_arn)
   }
 }
+
