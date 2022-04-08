@@ -10,7 +10,7 @@ module "firehose_label" {
 module "firehose_s3_bucket" {
   count                  = local.enabled && var.firehose_enabled ? 1 : 0
   source                 = "cloudposse/s3-bucket/aws"
-  version                = "0.49.0"
+  version                = "0.44.0"
   acl                    = "private"
   enabled                = true
   user_enabled           = true
@@ -23,31 +23,7 @@ module "firehose_s3_bucket" {
   s3_replication_enabled = false
   replication_rules      = []
   s3_replication_rules   = []
-  policy                 = data.aws_iam_policy_document.web_acl_organization_shared_logs.json
-
-  context = module.this.context
-}
-
-data "aws_iam_policy_document" "assume_role" {
-  count = local.enabled ? 1 : 0
-
-  statement {
-    effect  = "Allow"
-    actions = ["sts:AssumeRole"]
-
-    principals {
-      type        = "Service"
-      identifiers = ["firehose.amazonaws.com"]
-    }
-  }
-}
-
-data "aws_organizations_organization" "organization" {}
-data "aws_iam_policy_document" "web_acl_organization_shared_logs" {
-  name   = "WebAClPutObject"
   policy = <<EOF
-{
-  "Version": "2012-10-17",
 {
     "Version": "2012-10-17",
     "Statement": [
@@ -73,7 +49,24 @@ data "aws_iam_policy_document" "web_acl_organization_shared_logs" {
     ]
 }
 EOF
+  context = module.this.context
 }
+
+data "aws_iam_policy_document" "assume_role" {
+  count = local.enabled ? 1 : 0
+
+  statement {
+    effect  = "Allow"
+    actions = ["sts:AssumeRole"]
+
+    principals {
+      type        = "Service"
+      identifiers = ["firehose.amazonaws.com"]
+    }
+  }
+}
+
+data "aws_organizations_organization" "organization" {}
 
 resource "aws_iam_role" "firehose_role" {
   count = local.enabled && var.firehose_enabled ? 1 : 0
