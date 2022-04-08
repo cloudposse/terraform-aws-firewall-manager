@@ -1,3 +1,30 @@
+locals {
+  lifecycle_configuration_rules = [{
+    enabled                  = true
+    prefix                   = ""
+    standard_transition_days = 30
+    tags                     = { terraform = true }
+
+    abort_incomplete_multipart_upload_days = 1
+    deeparchive_transition_days            = 90
+
+    enable_current_object_expiration     = true
+    enable_deeparchive_transition        = false
+    enable_glacier_transition            = false
+    enable_noncurrent_version_expiration = true
+    enable_standard_ia_transition        = false
+
+    expiration_days         = 21
+    glacier_transition_days = 60
+
+    noncurrent_version_deeparchive_transition_days = 60
+    noncurrent_version_expiration_days             = 90
+    noncurrent_version_glacier_transition_days     = 30
+  }]
+}
+
+data "aws_organizations_organization" "organization" {}
+
 module "firehose_label" {
   source  = "cloudposse/label/null"
   version = "0.24.1"
@@ -10,7 +37,7 @@ module "firehose_label" {
 module "firehose_s3_bucket" {
   count                  = local.enabled && var.firehose_enabled ? 1 : 0
   source                 = "cloudposse/s3-bucket/aws"
-  version                = "0.49.0"
+  version                = "0.44.0"
   acl                    = "private"
   enabled                = true
   user_enabled           = true
@@ -23,8 +50,34 @@ module "firehose_s3_bucket" {
   s3_replication_enabled = false
   replication_rules      = []
   s3_replication_rules   = []
-
-  context = module.this.context
+  lifecycle_rules        = local.lifecycle_configuration_rules
+  policy                 = <<EOF
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "WriteWAFLogs",
+            "Effect": "Allow",
+            "Principal": "*",
+            "Action": [
+                "s3:ListBucket",
+                "s3:GetObject",
+                "s3:PutObject"
+            ],
+            "Resource": [
+                "arn:aws:s3:::${module.firehose_label.id}",
+                "arn:aws:s3:::${module.firehose_label.id}/*"
+            ],
+            "Condition": {
+                "StringEquals": {
+                    "aws:PrincipalOrgID": "${data.aws_organizations_organization.organization.id}"
+                }
+            }
+        }
+    ]
+}
+EOF
+  context                = module.this.context
 }
 
 data "aws_iam_policy_document" "assume_role" {
@@ -59,3 +112,4 @@ resource "aws_kinesis_firehose_delivery_stream" "firehose_stream" {
     bucket_arn = join("", module.firehose_s3_bucket.*.bucket_arn)
   }
 }
+
