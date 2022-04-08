@@ -1,13 +1,10 @@
 locals {
   lifecycle_configuration_rules = [{
     enabled = true # bool
-    id      = "v2rule"
+    id      = "vrule"
 
     abort_incomplete_multipart_upload_days = 1 # number
-
-    expiration = {
-      days = 30 # integer > 0
-    }
+    expiration_days = 30
   }]
 }
 
@@ -24,23 +21,23 @@ module "firehose_label" {
 }
 
 module "firehose_s3_bucket" {
-  count                         = local.enabled && var.firehose_enabled ? 1 : 0
-  source                        = "cloudposse/s3-bucket/aws"
-  version                       = "0.48.0"
-  acl                           = "private"
-  enabled                       = true
-  user_enabled                  = true
-  versioning_enabled            = false
-  allowed_bucket_actions        = ["s3:GetObject", "s3:ListBucket", "s3:GetBucketLocation"]
-  name                          = module.firehose_label.id
-  stage                         = module.this.stage
-  namespace                     = module.this.namespace
-  bucket_name                   = module.firehose_label.id
-  s3_replication_enabled        = false
-  replication_rules             = []
-  s3_replication_rules          = []
-  lifecycle_configuration_rules = local.lifecycle_configuration_rules
-  policy                        = <<EOF
+  count                  = local.enabled && var.firehose_enabled ? 1 : 0
+  source                 = "cloudposse/s3-bucket/aws"
+  version                = "0.44.0"
+  acl                    = "private"
+  enabled                = true
+  user_enabled           = true
+  versioning_enabled     = false
+  allowed_bucket_actions = ["s3:GetObject", "s3:ListBucket", "s3:GetBucketLocation"]
+  name                   = module.firehose_label.id
+  stage                  = module.this.stage
+  namespace              = module.this.namespace
+  bucket_name            = module.firehose_label.id
+  s3_replication_enabled = false
+  replication_rules      = []
+  s3_replication_rules   = []
+  lifecycle_rules        = local.lifecycle_configuration_rules
+  policy                 = <<EOF
 {
     "Version": "2012-10-17",
     "Statement": [
@@ -66,7 +63,7 @@ module "firehose_s3_bucket" {
     ]
 }
 EOF
-  context                       = module.this.context
+  context                = module.this.context
 }
 
 data "aws_iam_policy_document" "assume_role" {
