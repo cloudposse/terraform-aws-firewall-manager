@@ -1,3 +1,5 @@
+data "aws_organizations_organization" "organization" {}
+
 module "firehose_label" {
   source  = "cloudposse/label/null"
   version = "0.24.1"
@@ -65,8 +67,6 @@ data "aws_iam_policy_document" "assume_role" {
     }
   }
 }
-
-data "aws_organizations_organization" "organization" {}
 
 resource "aws_iam_role" "firehose_role" {
   count = local.enabled && var.firehose_enabled ? 1 : 0
