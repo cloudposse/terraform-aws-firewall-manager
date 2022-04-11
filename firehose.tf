@@ -1,28 +1,3 @@
-locals {
-  lifecycle_configuration_rules = [{
-    enabled                  = true
-    prefix                   = ""
-    standard_transition_days = 30
-    tags                     = { terraform = true }
-
-    abort_incomplete_multipart_upload_days = 1
-    deeparchive_transition_days            = 90
-
-    enable_current_object_expiration     = true
-    enable_deeparchive_transition        = false
-    enable_glacier_transition            = false
-    enable_noncurrent_version_expiration = true
-    enable_standard_ia_transition        = false
-
-    expiration_days         = 21
-    glacier_transition_days = 60
-
-    noncurrent_version_deeparchive_transition_days = 60
-    noncurrent_version_expiration_days             = 90
-    noncurrent_version_glacier_transition_days     = 30
-  }]
-}
-
 data "aws_organizations_organization" "organization" {}
 
 module "firehose_label" {
@@ -50,7 +25,6 @@ module "firehose_s3_bucket" {
   s3_replication_enabled = false
   replication_rules      = []
   s3_replication_rules   = []
-  lifecycle_rules        = local.lifecycle_configuration_rules
   policy                 = <<EOF
 {
     "Version": "2012-10-17",
