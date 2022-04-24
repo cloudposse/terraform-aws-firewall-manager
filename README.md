@@ -257,7 +257,7 @@ Available targets:
 |------|--------|---------|
 | <a name="module_dns_firewall_label"></a> [dns\_firewall\_label](#module\_dns\_firewall\_label) | cloudposse/label/null | 0.25.0 |
 | <a name="module_firehose_label"></a> [firehose\_label](#module\_firehose\_label) | cloudposse/label/null | 0.25.0 |
-| <a name="module_firehose_s3_bucket"></a> [firehose\_s3\_bucket](#module\_firehose\_s3\_bucket) | cloudposse/s3-bucket/aws | 0.44.1 |
+| <a name="module_firehose_s3_bucket"></a> [firehose\_s3\_bucket](#module\_firehose\_s3\_bucket) | cloudposse/s3-bucket/aws | 2.0.0 |
 | <a name="module_network_firewall_label"></a> [network\_firewall\_label](#module\_network\_firewall\_label) | cloudposse/label/null | 0.25.0 |
 | <a name="module_security_groups_common_label"></a> [security\_groups\_common\_label](#module\_security\_groups\_common\_label) | cloudposse/label/null | 0.25.0 |
 | <a name="module_security_groups_content_audit_label"></a> [security\_groups\_content\_audit\_label](#module\_security\_groups\_content\_audit\_label) | cloudposse/label/null | 0.25.0 |
@@ -425,7 +425,7 @@ In general, PRs are welcome. We follow the typical "fork-and-pull" Git workflow.
 
 ## Copyrights
 
-Copyright © 2021-2021 [Cloud Posse, LLC](https://cloudposse.com)
+Copyright © 2021-2022 [Cloud Posse, LLC](https://cloudposse.com)
 
 
 
