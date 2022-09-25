@@ -257,7 +257,7 @@ Available targets:
 |------|--------|---------|
 | <a name="module_dns_firewall_label"></a> [dns\_firewall\_label](#module\_dns\_firewall\_label) | cloudposse/label/null | 0.25.0 |
 | <a name="module_firehose_label"></a> [firehose\_label](#module\_firehose\_label) | cloudposse/label/null | 0.25.0 |
-| <a name="module_firehose_s3_bucket"></a> [firehose\_s3\_bucket](#module\_firehose\_s3\_bucket) | cloudposse/s3-bucket/aws | 0.44.1 |
+| <a name="module_firehose_s3_bucket"></a> [firehose\_s3\_bucket](#module\_firehose\_s3\_bucket) | cloudposse/s3-bucket/aws | 3.0.0 |
 | <a name="module_network_firewall_label"></a> [network\_firewall\_label](#module\_network\_firewall\_label) | cloudposse/label/null | 0.25.0 |
 | <a name="module_security_groups_common_label"></a> [security\_groups\_common\_label](#module\_security\_groups\_common\_label) | cloudposse/label/null | 0.25.0 |
 | <a name="module_security_groups_content_audit_label"></a> [security\_groups\_content\_audit\_label](#module\_security\_groups\_content\_audit\_label) | cloudposse/label/null | 0.25.0 |
@@ -500,7 +500,7 @@ Check out [our other projects][github], [follow us on twitter][twitter], [apply 
 
 [![README Footer][readme_footer_img]][readme_footer_link]
 [![Beacon][beacon]][website]
-
+<!-- markdownlint-disable -->
   [logo]: https://cloudposse.com/logo-300x69.svg
   [docs]: https://cpco.io/docs?utm_source=github&utm_medium=readme&utm_campaign=cloudposse/terraform-aws-firewall-manager&utm_content=docs
   [website]: https://cpco.io/homepage?utm_source=github&utm_medium=readme&utm_campaign=cloudposse/terraform-aws-firewall-manager&utm_content=website
@@ -531,3 +531,4 @@ Check out [our other projects][github], [follow us on twitter][twitter], [apply 
   [share_googleplus]: https://plus.google.com/share?url=https://github.com/cloudposse/terraform-aws-firewall-manager
   [share_email]: mailto:?subject=terraform-aws-firewall-manager&body=https://github.com/cloudposse/terraform-aws-firewall-manager
   [beacon]: https://ga-beacon.cloudposse.com/UA-76589703-4/cloudposse/terraform-aws-firewall-manager?pixel&cs=github&cm=readme&an=terraform-aws-firewall-manager
+<!-- markdownlint-restore -->
