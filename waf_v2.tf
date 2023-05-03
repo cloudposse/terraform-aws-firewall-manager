@@ -2,7 +2,7 @@ module "waf_v2_label" {
   for_each = local.waf_v2_policies
 
   source  = "cloudposse/label/null"
-  version = "0.24.1"
+  version = "0.25.0"
 
   attributes = [each.key]
   context    = module.this.context
@@ -19,12 +19,20 @@ resource "aws_fms_policy" "waf_v2" {
   resource_type               = lookup(each.value, "resource_type", null)
   resource_tags               = lookup(each.value, "resource_tags", null)
 
-  include_map {
-    account = lookup(each.value, "include_account_ids", [])
+  dynamic "include_map" {
+    for_each = lookup(each.value, "include_account_ids", [])
+
+    content {
+      account = include_map.value
+    }
   }
 
-  exclude_map {
-    account = lookup(each.value, "exclude_account_ids", [])
+  dynamic "exclude_map" {
+    for_each = lookup(each.value, "exclude_account_ids", [])
+
+    content {
+      account = exclude_map.value
+    }
   }
 
   security_service_policy_data {
