@@ -2,7 +2,7 @@ module "network_firewall_label" {
   for_each = local.network_firewall_policies
 
   source  = "cloudposse/label/null"
-  version = "0.24.1"
+  version = "0.25.0"
 
   attributes = [each.key]
   context    = module.this.context
@@ -20,7 +20,7 @@ resource "aws_fms_policy" "network_firewall" {
   resource_tags               = lookup(each.value, "resource_tags", null)
 
   dynamic "include_map" {
-    for_each = lookup(each.value, "include_account_ids", null) != null ? [1] : []
+    for_each = lookup(each.value, "include_account_ids", [])
 
     content {
       account = include_map.value
@@ -28,7 +28,7 @@ resource "aws_fms_policy" "network_firewall" {
   }
 
   dynamic "exclude_map" {
-    for_each = lookup(each.value, "exclude_account_ids", null) != null ? [1] : []
+    for_each = lookup(each.value, "exclude_account_ids", [])
 
     content {
       account = exclude_map.value
@@ -48,6 +48,8 @@ resource "aws_fms_policy" "network_firewall" {
       networkFirewallOrchestrationConfig = {
         singleFirewallEndpointPerVPC = lookup(each.value.policy_data.orchestration_config, "single_firewall_endpoint_per_vpc", false)
         allowedIPV4CidrList          = lookup(each.value.policy_data.orchestration_config, "allowed_ipv4_cidrs", [])
+        routeManagementAction        = lookup(each.value.policy_data.orchestration_config, "route_management_action", "OFF")
+        routeManagementTargetTypes   = lookup(each.value.policy_data.orchestration_config, "route_management_target_types", null)
       }
       }
     )

@@ -4,9 +4,10 @@ terraform {
   required_providers {
     aws = {
       source  = "hashicorp/aws"
-      version = ">= 2.0"
+      version = ">= 3.38"
       configuration_aliases = [
-        aws.admin
+        aws.admin,
+        aws
       ]
     }
   }
