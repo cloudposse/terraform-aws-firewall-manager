@@ -19,20 +19,12 @@ resource "aws_fms_policy" "shield_advanced" {
   resource_type               = lookup(each.value, "resource_type", null)
   resource_tags               = lookup(each.value, "resource_tags", null)
 
-  dynamic "include_map" {
-    for_each = lookup(each.value, "include_account_ids", [])
-
-    content {
-      account = include_map.value
-    }
+  include_map {
+    account = lookup(each.value, "include_account_ids", [])
   }
 
-  dynamic "exclude_map" {
-    for_each = lookup(each.value, "exclude_account_ids", [])
-
-    content {
-      account = exclude_map.value
-    }
+  exclude_map {
+    account = lookup(each.value, "exclude_account_ids", [])
   }
 
   security_service_policy_data {

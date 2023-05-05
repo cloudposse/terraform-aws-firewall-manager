@@ -12,11 +12,7 @@ module "firehose_label" {
 module "firehose_s3_bucket" {
   count                  = local.enabled && var.firehose_enabled ? 1 : 0
   source                 = "cloudposse/s3-bucket/aws"
-<<<<<<< HEAD
-  version                = "0.44.0"
-=======
-  version                = "0.44.1"
->>>>>>> 1bd76dd6be3cd863574aaac32eeba1ee837f4fd1
+  version                = "0.49.0"
   acl                    = "private"
   enabled                = true
   user_enabled           = true
