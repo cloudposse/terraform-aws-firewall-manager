@@ -160,6 +160,15 @@ variable "shield_advanced_policies" {
       A list of AWS Organization member Accounts that you want to exclude from this AWS FMS Policy.
     include_account_ids:
       A list of AWS Organization member Accounts that you want to include for this AWS FMS Policy.
+    policy_data: # Should be used for CloudFront only. (ALBs are not supported yet)
+      automaticResponseStatus:
+        The default value for automaticResponseStatus is IGNORED
+        Possible values: `ENABLED`, `IGNORED`, or `DISABLED`.
+      automaticResponseAction:
+        The value for automaticResponseAction is only required when automaticResponseStatus is set to ENABLED.
+        Possible values: `BLOCK` or `COUNT`.
+      overrideCustomerWebaclClassic:
+        The default value for overrideCustomerWebaclClassic is false
   DOC
 }
 

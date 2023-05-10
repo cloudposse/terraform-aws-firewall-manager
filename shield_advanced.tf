@@ -27,11 +27,37 @@ resource "aws_fms_policy" "shield_advanced" {
     account = lookup(each.value, "exclude_account_ids", [])
   }
 
-  security_service_policy_data {
-    type = "SHIELD_ADVANCED"
-
-    managed_service_data = jsonencode({
+  # Non-CloudFront resources
+  dynamic "security_service_policy_data" {
+    for_each = lookup(each.value, "policy_data", null) == null ? [0] : []
+    content {
       type = "SHIELD_ADVANCED"
-    })
+      managed_service_data = jsonencode({
+        type = "SHIELD_ADVANCED"
+      })
+    }
   }
+
+  # Used only for CloudFront
+  dynamic "security_service_policy_data" {
+    for_each = lookup(each.value, "policy_data", null) == null ? [] : [each.value]
+    content {
+      type = "SHIELD_ADVANCED"
+
+      managed_service_data = jsonencode({
+        type = "SHIELD_ADVANCED"
+
+        automaticResponseConfiguration = {
+          # "ENABLED|IGNORED|DISABLED"
+          automaticResponseStatus = lookup(each.value.policy_data, "automaticResponseStatus", null)
+          # "BLOCK|COUNT"
+          automaticResponseAction = lookup(each.value.policy_data, "automaticResponseAction", null)
+          # true|false
+          overrideCustomerWebaclClassic = lookup(each.value.policy_data, "overrideCustomerWebaclClassic", false)
+        }
+
+      })
+    }
+  }
+
 }
