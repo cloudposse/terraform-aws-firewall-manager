@@ -16,6 +16,7 @@ locals {
   logging_configuration = local.enabled ? (var.firehose_enabled ? local.logging_config_firehose_enabled : (var.firehose_arn != null ? local.logging_config_firehose_arn : null)) : null
 }
 
+    
 resource "aws_fms_admin_account" "default" {
   count    = local.enabled && var.admin_account_enabled ? 1 : 0
   provider = aws.admin
