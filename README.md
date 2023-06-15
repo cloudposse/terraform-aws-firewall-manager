@@ -248,8 +248,8 @@ Available targets:
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.3.0 |
-| <a name="provider_aws.admin"></a> [aws.admin](#provider\_aws.admin) | 5.3.0 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | >= 4.9.0 |
+| <a name="provider_aws.admin"></a> [aws.admin](#provider\_aws.admin) | >= 4.9.0 |
 
 ## Modules
 
