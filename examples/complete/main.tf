@@ -4,7 +4,7 @@ locals {
 
 module "vpc" {
   source  = "cloudposse/vpc/aws"
-  version = "v0.26.1"
+  version = "2.1.0"
 
   cidr_block = "10.0.0.0/16"
 
@@ -19,7 +19,7 @@ module "firewall_manager" {
     aws       = aws
   }
 
-  shiled_advanced_policies  = var.shield_advanced_policies
+  shield_advanced_policies  = var.shield_advanced_policies
   waf_policies              = var.waf_policies
   dns_firewall_policies     = var.dns_firewall_policies
   network_firewall_policies = var.network_firewall_policies
