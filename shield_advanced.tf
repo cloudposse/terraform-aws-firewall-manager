@@ -11,13 +11,14 @@ module "shield_advanced_label" {
 resource "aws_fms_policy" "shield_advanced" {
   for_each = local.shield_advanced_policies
 
-  name                        = module.shield_advanced_label[each.key].id
-  delete_all_policy_resources = lookup(each.value, "delete_all_policy_resources", true)
-  exclude_resource_tags       = lookup(each.value, "exclude_resource_tags", false)
-  remediation_enabled         = lookup(each.value, "remediation_enabled", false)
-  resource_type_list          = lookup(each.value, "resource_type_list", null)
-  resource_type               = lookup(each.value, "resource_type", null)
-  resource_tags               = lookup(each.value, "resource_tags", null)
+  name                               = module.shield_advanced_label[each.key].id
+  delete_all_policy_resources        = lookup(each.value, "delete_all_policy_resources", true)
+  delete_unused_fm_managed_resources = lookup(each.value, "delete_unused_fm_managed_resources", false)
+  exclude_resource_tags              = lookup(each.value, "exclude_resource_tags", false)
+  remediation_enabled                = lookup(each.value, "remediation_enabled", false)
+  resource_type_list                 = lookup(each.value, "resource_type_list", null)
+  resource_type                      = lookup(each.value, "resource_type", null)
+  resource_tags                      = lookup(each.value, "resource_tags", null)
 
   dynamic "include_map" {
     for_each = lookup(each.value, "include_account_ids", [])
