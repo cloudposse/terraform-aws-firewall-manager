@@ -4,9 +4,9 @@ locals {
 
 module "vpc" {
   source  = "cloudposse/vpc/aws"
-  version = "v0.26.1"
+  version = "2.1.0"
 
-  cidr_block = "10.0.0.0/16"
+  ipv4_primary_cidr_block = "10.0.0.0/16"
 
   context = module.this.context
 }
@@ -48,7 +48,7 @@ module "firewall_manager" {
 
       policy_data = {
         security_group_action = "allow"
-        security_groups       = [module.vpc.security_group_id]
+        security_groups       = [module.vpc.vpc_default_security_group_id]
       }
     }
   ]
@@ -62,7 +62,7 @@ module "firewall_manager" {
         revert_manual_security_group_changes         = false
         exclusive_resource_security_group_management = false
         apply_to_all_ec2_instance_enis               = false
-        security_groups                              = [module.vpc.security_group_id]
+        security_groups                              = [module.vpc.vpc_default_security_group_id]
       }
     }
   ]
