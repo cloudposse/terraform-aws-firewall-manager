@@ -143,6 +143,9 @@ variable "shield_advanced_policies" {
     delete_all_policy_resources:
       Whether to perform a clean-up process.
       Defaults to `true`.
+    delete_unused_fm_managed_resources:
+      If true, Firewall Manager will automatically remove protections from resources that leave the policy scope.
+      Defaults to `false`.
     exclude_resource_tags:
       A boolean value, if `true` the tags that are specified in the `resource_tags` are not protected by this policy.
       If set to `false` and `resource_tags` are populated, resources that contain tags will be protected by this policy.
