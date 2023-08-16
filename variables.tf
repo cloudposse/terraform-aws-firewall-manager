@@ -239,6 +239,15 @@ variable "waf_v2_policies" {
         A list of pre-proccess rule groups.
       post_process_rule_groups:
         A list of post-proccess rule groups.
+      custom_request_handling:
+        A custom header for custom request and response handling.
+        Defaults to null.
+      custom_response:
+        A custom response for the web request.
+        Defaults to null.
+      sampled_requests_enabled_for_default_actions:
+        Whether WAF should store a sampling of the web requests that match the rules.
+        Possible values: `true` or `false`.
   DOC
 }
 
