@@ -43,7 +43,9 @@ resource "aws_fms_policy" "shield_advanced" {
       type = "SHIELD_ADVANCED"
       automaticResponseConfiguration = {
         automaticResponseStatus = lookup(each.value.policy_data, "automatic_response_status", "IGNORED")
-        automaticResponseAction = (lookup(each.value.policy_data, "automatic_response_status", "IGNORED") == "ENABLED") ? "COUNT" : null
+        automaticResponseAction = (lookup(each.value.policy_data, "automatic_response_status", "IGNORED") == "ENABLED" &&
+                                   lookup(each.value.policy_data, "automatic_response_action", "") == "BLOCK"
+                                  ) ? "BLOCK" : "COUNT"
       }
       overrideCustomerWebaclClassic = lookup(each.value.policy_data, "override_customer_webacl_classic", false)
     })
