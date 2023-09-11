@@ -163,6 +163,19 @@ variable "shield_advanced_policies" {
       A list of AWS Organization member Accounts that you want to exclude from this AWS FMS Policy.
     include_account_ids:
       A list of AWS Organization member Accounts that you want to include for this AWS FMS Policy.
+    policy_data:
+      automatic_response_status:
+        Status of shield automatic response.
+        Possible values: ENABLED|IGNORED|DISABLED.
+        Default is IGNORED.
+      automatic_response_action:
+        The automatic response action.
+        Possible values: BLOCK|COUNT.
+        Default is null.
+      override_customer_webacl_classic:
+        Whether to replace AWS WAF Classic web ACLs with this policy's AWS WAF v2 web ACLs where possible.
+        Possible values: true|false
+        Default is false.
   DOC
 }
 

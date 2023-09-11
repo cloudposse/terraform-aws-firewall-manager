@@ -39,15 +39,17 @@ resource "aws_fms_policy" "shield_advanced" {
   security_service_policy_data {
     type = "SHIELD_ADVANCED"
 
-    managed_service_data = jsonencode({
+    managed_service_data = lookup(each.value, "policy_data", null)!=null ? jsonencode({
       type = "SHIELD_ADVANCED"
       automaticResponseConfiguration = {
         automaticResponseStatus = lookup(each.value.policy_data, "automatic_response_status", "IGNORED")
         automaticResponseAction = (lookup(each.value.policy_data, "automatic_response_status", "IGNORED") == "ENABLED" &&
                                    lookup(each.value.policy_data, "automatic_response_action", "") == "BLOCK"
-                                  ) ? "BLOCK" : "COUNT"
+                                  ) ? "BLOCK" : null
       }
       overrideCustomerWebaclClassic = lookup(each.value.policy_data, "override_customer_webacl_classic", false)
+    }):jsonencode({
+        type = "SHIELD_ADVANCED"
     })
   }
 }
