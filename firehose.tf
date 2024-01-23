@@ -86,4 +86,3 @@ resource "aws_kinesis_firehose_delivery_stream" "firehose_stream" {
     bucket_arn = join("", module.firehose_s3_bucket.*.bucket_arn)
   }
 }
-
