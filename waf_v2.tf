@@ -47,8 +47,11 @@ resource "aws_fms_policy" "waf_v2" {
         type = upper(each.value.policy_data.default_action)
       }
 
-      overrideCustomerWebACLAssociation = lookup(each.value.policy_data, "override_customer_web_acl_association", false)
-      loggingConfiguration              = lookup(each.value.policy_data, "logging_configuration", local.logging_configuration)
+      overrideCustomerWebACLAssociation       = lookup(each.value.policy_data, "override_customer_web_acl_association", false)
+      loggingConfiguration                    = lookup(each.value.policy_data, "logging_configuration", local.logging_configuration)
+      customRequestHandling                   = lookup(each.value.policy_data, "custom_request_handling", null)
+      customResponse                          = lookup(each.value.policy_data, "custom_response", null)
+      sampledRequestsEnabledForDefaultActions = lookup(each.value.policy_data, "sampled_requests_enabled_for_default_actions", false)
     })
   }
 }

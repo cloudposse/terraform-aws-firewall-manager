@@ -163,6 +163,19 @@ variable "shield_advanced_policies" {
       A list of AWS Organization member Accounts that you want to exclude from this AWS FMS Policy.
     include_account_ids:
       A list of AWS Organization member Accounts that you want to include for this AWS FMS Policy.
+    policy_data:
+      automatic_response_status:
+        Status of shield automatic response.
+        Possible values: ENABLED|IGNORED|DISABLED.
+        Default is IGNORED.
+      automatic_response_action:
+        The automatic response action.
+        Possible values: BLOCK|COUNT.
+        Default is null.
+      override_customer_webacl_classic:
+        Whether to replace AWS WAF Classic web ACLs with this policy's AWS WAF v2 web ACLs where possible.
+        Possible values: true|false
+        Default is false.
   DOC
 }
 
@@ -239,6 +252,15 @@ variable "waf_v2_policies" {
         A list of pre-proccess rule groups.
       post_process_rule_groups:
         A list of post-proccess rule groups.
+      custom_request_handling:
+        A custom header for custom request and response handling.
+        Defaults to null.
+      custom_response:
+        A custom response for the web request.
+        Defaults to null.
+      sampled_requests_enabled_for_default_actions:
+        Whether WAF should store a sampling of the web requests that match the rules.
+        Possible values: `true` or `false`.
   DOC
 }
 
