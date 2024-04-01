@@ -1,0 +1,7 @@
+# Upstream changes from _extends are only recognized when modifications are made to this file in the default branch.
+_extends: .github
+repository:
+  name: terraform-aws-firewall-manager
+  description: Terraform module to configure AWS Firewall Manager
+  homepage: https://cloudposse.com/accelerate
+  topics: compliance, terraform, terraform-modules, aws
