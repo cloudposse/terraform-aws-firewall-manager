@@ -79,9 +79,9 @@ resource "aws_kinesis_firehose_delivery_stream" "firehose_stream" {
   count = local.enabled && var.firehose_enabled ? 1 : 0
   // `aws-waf-logs-` required by AWS - https://aws.amazon.com/premiumsupport/knowledge-center/waf-configure-comprehensive-logging/
   name        = format("%s%s", "aws-waf-logs-", module.this.id)
-  destination = "s3"
+  destination = "extended_s3"
 
-  s3_configuration {
+  extended_s3_configuration {
     role_arn   = join("", aws_iam_role.firehose_role.*.arn)
     bucket_arn = join("", module.firehose_s3_bucket.*.bucket_arn)
   }
