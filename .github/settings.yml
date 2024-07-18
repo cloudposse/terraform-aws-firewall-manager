@@ -5,3 +5,4 @@ repository:
   description: Terraform module to configure AWS Firewall Manager
   homepage: https://cloudposse.com/accelerate
   topics: compliance, terraform, terraform-modules, aws
+
